@@ -1,5 +1,6 @@
 # PopularMoviesStage1
-Project for Udacity Android Developer Nanodegree
+Project for Udacity Android Developer Nanodegree  
+**(No starter code was given for this project. Everything is my own work.)**
 
 Here are the criteria for the project given by the Udacity course:
 
