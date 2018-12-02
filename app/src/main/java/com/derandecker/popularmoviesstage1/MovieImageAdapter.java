@@ -51,7 +51,6 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Pi
         }
 
         void bind() {
-            moviePicView.setBackgroundColor(Color.rgb(0,0,0));
             moviePicView.setImageResource(R.drawable.testimage);
         }
     }
