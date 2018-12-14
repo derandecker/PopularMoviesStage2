@@ -2,6 +2,8 @@
 Project for Udacity Android Developer Nanodegree  
 **(No starter code was given for this project. Everything is my own work.)**
 
+**FYI -- The code will run when compiled, but you must replace INSERT_API_KEY_HERE in utils/NetworkUtils.java with the tmdb API KEY you obtain from https://www.themoviedb.org/settings/api **
+
 Here are the criteria for the project given by the Udacity course:
 
 **Project Overview**
