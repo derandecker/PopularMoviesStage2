@@ -1,9 +1,7 @@
 package com.derandecker.popularmoviesstage1;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,6 @@ import com.derandecker.popularmoviesstage1.utils.JSONUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
-
-import static java.security.AccessController.getContext;
 
 
 public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.ImageViewHolder> {
@@ -44,6 +40,8 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
             Movie movie = JSONUtils.parseMovieJson(movies, position);
             Picasso.with(context)
                     .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
+                    .placeholder(R.drawable.downloading)
+                    .error(R.drawable.unknownerror)
                     .fit()
                     .into(holder.moviePic);
         } catch (JSONException e) {
