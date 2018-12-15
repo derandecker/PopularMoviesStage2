@@ -18,11 +18,17 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
     private LayoutInflater inflater;
     private Context context;
     private String movies;
+    final private MovieClickListener mOnClickListener;
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185/";
 
-    public MovieImageAdapter(Context context, String movies) {
+    public interface MovieClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public MovieImageAdapter(Context context, String movies, MovieClickListener listener) {
         inflater = LayoutInflater.from(context);
+        mOnClickListener = listener;
         this.context = context;
         this.movies = movies;
     }
@@ -55,14 +61,39 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
         return 20;
     }
 
-    class ImageViewHolder extends RecyclerView.ViewHolder {
+
+    class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView moviePic;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
             moviePic = (ImageView) itemView.findViewById(R.id.iv_movie_pic);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
+        }
+
+//        @Override
+//        public void onClick(View v) {
+//            int clickedPosition = getAdapterPosition();
+//            Movie movie = null;
+//            try {
+//                movie = JSONUtils.parseMovieJson(movies, clickedPosition);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            if (movie!=null) {
+//                MainActivity.launchDetailActivity(movie);
+////                String title = movie.getTitle();
+//
+//            }
     }
+
 }
+
 
 

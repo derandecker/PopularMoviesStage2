@@ -2,4 +2,6 @@
     <string name="app_name">Popular Movies Stage 1</string>
     <string name="popular_menu_item">Sort by Popular Movies</string>
     <string name="highest_rated_menu_item">Sort by Highest Rated</string>
+    <string name="detail_activity_label">Movie Details</string>
+    <string name="detail_error_message">Data missing</string>
 </resources>

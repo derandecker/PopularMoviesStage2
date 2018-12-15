@@ -1,6 +1,7 @@
 package com.derandecker.popularmoviesstage1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -13,13 +14,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.derandecker.popularmoviesstage1.model.Movie;
+import com.derandecker.popularmoviesstage1.utils.JSONUtils;
 import com.derandecker.popularmoviesstage1.utils.NetworkUtils;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieImageAdapter.MovieClickListener {
 
+    private String movieString;
     private RecyclerView mMoviesPics;
     private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
@@ -41,14 +47,15 @@ public class MainActivity extends AppCompatActivity {
         setOption(DEFAULT_URL);
     }
 
-    public void setOption(String sortBy){
+    public void setOption(String sortBy) {
         URL movie_url = NetworkUtils.buildUrl(sortBy);
         new TmdbMovieTask().execute(movie_url);
     }
 
     public void populateUI(String tmdbMovies) {
-        MovieImageAdapter mMovie = new MovieImageAdapter(this, tmdbMovies);
+        MovieImageAdapter mMovie = new MovieImageAdapter(this, tmdbMovies, this);
         mMoviesPics.setAdapter(mMovie);
+        this.movieString = tmdbMovies;
     }
 
     public boolean isOnline() {
@@ -57,6 +64,28 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Movie movie = null;
+        try {
+            movie = JSONUtils.parseMovieJson(movieString, clickedItemIndex);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (movie != null) {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_ID, movie.getId());
+            intent.putExtra(DetailActivity.EXTRA_TITLE, movie.getTitle());
+            intent.putExtra(DetailActivity.EXTRA_IMAGE_PATH, movie.getImagePath());
+            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, movie.getOverview());
+            intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE, movie.getVoteAverage());
+            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, movie.getReleaseDate());
+            startActivity(intent);
+        }
+    }
+
 
     public class TmdbMovieTask extends AsyncTask<URL, Void, String> {
 

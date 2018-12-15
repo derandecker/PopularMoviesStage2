@@ -21,9 +21,28 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+
+    public int getId(){
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public String getImagePath() {
         return imagePath;
     }
 
+    public String getOverview(){
+        return overview;
+    }
 
+    public int getVoteAverage(){
+        return voteAverage;
+    }
+
+    public String getReleaseDate(){
+        return releaseDate;
+    }
 }
