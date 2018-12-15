@@ -8,23 +8,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.JsonReader;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.derandecker.popularmoviesstage1.model.Movie;
-import com.derandecker.popularmoviesstage1.utils.JSONUtils;
 import com.derandecker.popularmoviesstage1.utils.NetworkUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mMoviesPics;
+    private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
+    private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
+    private static final String DEFAULT_URL = "https://api.themoviedb.org/3/movie/popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
                 new GridLayoutManager(this, spanSize);
         mMoviesPics.setLayoutManager(gridLayoutManager);
         mMoviesPics.setHasFixedSize(true);
+        setOption(DEFAULT_URL);
+    }
 
-        URL movie_url = NetworkUtils.buildUrl("https://api.themoviedb.org/3/movie/popular");
+    public void setOption(String sortBy){
+        URL movie_url = NetworkUtils.buildUrl(sortBy);
         new TmdbMovieTask().execute(movie_url);
     }
 
@@ -78,10 +80,31 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String tmdbMovies) {
             if (tmdbMovies != null) {
                 populateUI(tmdbMovies);
-            }
-            else{
+            } else {
                 Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.popular:
+                setOption(MOVIE_URL_POPULAR);
+                return true;
+            case R.id.highest_rated:
+                setOption(MOVIE_URL_TOP_RATED);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

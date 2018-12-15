@@ -11,8 +11,6 @@ import java.util.Scanner;
 
 public class NetworkUtils {
     private static final String API_KEY = INSERT_API_KEY_HERE;
-    private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
-    private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
 
     final static String API_KEY_PARAM = "api_key";
 
