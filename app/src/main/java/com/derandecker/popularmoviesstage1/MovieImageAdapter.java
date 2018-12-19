@@ -57,7 +57,6 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public int getItemCount() {
-        //temporary placeholder int
         return 20;
     }
 
@@ -76,21 +75,6 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
             int clickedPosition = getAdapterPosition();
             mOnClickListener.onListItemClick(clickedPosition);
         }
-
-//        @Override
-//        public void onClick(View v) {
-//            int clickedPosition = getAdapterPosition();
-//            Movie movie = null;
-//            try {
-//                movie = JSONUtils.parseMovieJson(movies, clickedPosition);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            if (movie!=null) {
-//                MainActivity.launchDetailActivity(movie);
-////                String title = movie.getTitle();
-//
-//            }
     }
 
 }

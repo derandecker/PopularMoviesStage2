@@ -47,18 +47,18 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         setOption(DEFAULT_URL);
     }
 
-    public void setOption(String sortBy) {
+    private void setOption(String sortBy) {
         URL movie_url = NetworkUtils.buildUrl(sortBy);
         new TmdbMovieTask().execute(movie_url);
     }
 
-    public void populateUI(String tmdbMovies) {
+    private void populateUI(String tmdbMovies) {
         MovieImageAdapter mMovie = new MovieImageAdapter(this, tmdbMovies, this);
         mMoviesPics.setAdapter(mMovie);
         this.movieString = tmdbMovies;
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

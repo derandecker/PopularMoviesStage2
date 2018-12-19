@@ -4,4 +4,6 @@
     <string name="highest_rated_menu_item">Sort by Highest Rated</string>
     <string name="detail_activity_label">Movie Details</string>
     <string name="detail_error_message">Data missing</string>
+    <string name="vote_average_label">Average User Rating:</string>
+    <string name="release_date_label">Released:</string>
 </resources>

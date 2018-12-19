@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class NetworkUtils {
     private static final String API_KEY = INSERT_API_KEY_HERE;
 
-    final static String API_KEY_PARAM = "api_key";
+    final private static String API_KEY_PARAM = "api_key";
 
     public static URL buildUrl(String MOVIE_URL) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
