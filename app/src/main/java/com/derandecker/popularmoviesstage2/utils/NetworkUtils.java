@@ -2,6 +2,8 @@ package com.derandecker.popularmoviesstage2.utils;
 
 import android.net.Uri;
 
+import com.derandecker.popularmoviesstage2.BuildConfig;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -10,7 +12,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
-    private static final String API_KEY = INSERT_API_KEY_HERE;
+    private static final String API_KEY = BuildConfig.MY_API_KEY;
 
     final private static String API_KEY_PARAM = "api_key";
 

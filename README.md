@@ -2,7 +2,7 @@
 Project for Udacity Android Developer Nanodegree  
 **(No starter code was given for this project. Everything is my own work.)**
 
-**FYI -- The code will run when compiled, but you must replace INSERT_API_KEY_HERE in utils/NetworkUtils.java with the tmdb API KEY you obtain from https://www.themoviedb.org/settings/api **
+**FYI -- The code will run when compiled, but you must replace "BuildConfig.MY_API_KEY" in utils/NetworkUtils.java with the tmdb API KEY you obtain from https://www.themoviedb.org/settings/api **
 
 I chose to clone PopularMoviesStage1 instead of creating a new branch so that the two projects were easily discernable, and for the sake of ease of submitting the project for review by Udacity staff.
 
