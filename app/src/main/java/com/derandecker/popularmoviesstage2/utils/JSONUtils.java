@@ -1,6 +1,6 @@
-package com.derandecker.popularmoviesstage1.utils;
+package com.derandecker.popularmoviesstage2.utils;
 
-import com.derandecker.popularmoviesstage1.model.Movie;
+import com.derandecker.popularmoviesstage2.model.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;

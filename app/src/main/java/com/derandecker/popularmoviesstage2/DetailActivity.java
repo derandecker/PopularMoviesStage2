@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1;
+package com.derandecker.popularmoviesstage2;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1;
+package com.derandecker.popularmoviesstage2;
 
 import org.junit.Test;
 

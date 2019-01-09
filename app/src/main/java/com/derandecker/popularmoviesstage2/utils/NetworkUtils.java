@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1.utils;
+package com.derandecker.popularmoviesstage2.utils;
 
 import android.net.Uri;
 

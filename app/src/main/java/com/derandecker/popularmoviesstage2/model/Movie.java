@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1.model;
+package com.derandecker.popularmoviesstage2.model;
 
 public class Movie {
 

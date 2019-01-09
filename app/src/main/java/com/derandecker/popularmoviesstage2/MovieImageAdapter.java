@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1;
+package com.derandecker.popularmoviesstage2;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.derandecker.popularmoviesstage1.model.Movie;
-import com.derandecker.popularmoviesstage1.utils.JSONUtils;
+import com.derandecker.popularmoviesstage2.model.Movie;
+import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;

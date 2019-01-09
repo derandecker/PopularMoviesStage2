@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage1;
+package com.derandecker.popularmoviesstage2;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.derandecker.popularmoviesstage1.model.Movie;
-import com.derandecker.popularmoviesstage1.utils.JSONUtils;
-import com.derandecker.popularmoviesstage1.utils.NetworkUtils;
+import com.derandecker.popularmoviesstage2.model.Movie;
+import com.derandecker.popularmoviesstage2.utils.JSONUtils;
+import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
 
 import org.json.JSONException;
 
