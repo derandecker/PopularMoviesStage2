@@ -6,11 +6,11 @@ import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 
 
-public class AddMovieViewModel extends ViewModel {
+public class MovieDetailViewModel extends ViewModel {
 
     private LiveData<MovieEntry> movie;
 
-    public AddMovieViewModel(AppDatabase database, int movieId) {
+    public MovieDetailViewModel(AppDatabase database, int movieId) {
         movie = database.movieDao().loadMovieById(movieId);
     }
 

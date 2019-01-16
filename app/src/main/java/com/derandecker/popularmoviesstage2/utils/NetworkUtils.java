@@ -1,5 +1,6 @@
 package com.derandecker.popularmoviesstage2.utils;
 
+import android.arch.lifecycle.LiveData;
 import android.net.Uri;
 
 import com.derandecker.popularmoviesstage2.BuildConfig;

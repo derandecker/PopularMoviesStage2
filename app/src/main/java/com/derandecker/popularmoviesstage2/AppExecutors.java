@@ -1,4 +1,4 @@
-package com.example.android.todolist;
+package com.derandecker.popularmoviesstage2;
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

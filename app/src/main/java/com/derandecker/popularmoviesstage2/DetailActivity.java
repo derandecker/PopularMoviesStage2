@@ -1,12 +1,18 @@
 package com.derandecker.popularmoviesstage2;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.derandecker.popularmoviesstage2.database.AppDatabase;
+import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
@@ -26,28 +32,39 @@ public class DetailActivity extends AppCompatActivity {
     private static final int DEFAULT_INT = 0;
 //    private static final String DEFAULT_STRING = "Data not available";
 
+    private AppDatabase mDb;
+    private int id;
+    private String title;
+    private String imagePath;
+    private String overview;
+    private int voteAverage;
+    private String releaseDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
         }
 
-        int id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
-        String title = intent.getStringExtra(EXTRA_TITLE);
-        String imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH);
-        String overview = intent.getStringExtra(EXTRA_OVERVIEW);
-        int voteAverage = intent.getIntExtra(EXTRA_VOTE_AVERAGE, DEFAULT_INT);
-        String releaseDate = intent.getStringExtra(EXTRA_RELEASE_DATE);
+        id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
+        title = intent.getStringExtra(EXTRA_TITLE);
+        imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH);
+        overview = intent.getStringExtra(EXTRA_OVERVIEW);
+        voteAverage = intent.getIntExtra(EXTRA_VOTE_AVERAGE, DEFAULT_INT);
+        releaseDate = intent.getStringExtra(EXTRA_RELEASE_DATE);
 
         TextView titleTv = (TextView) findViewById(R.id.title_tv);
         ImageView posterIv = (ImageView) findViewById(R.id.poster_iv);
         TextView voteAvgTv = (TextView) findViewById(R.id.vote_average_tv);
         TextView releaseDateTv = (TextView) findViewById(R.id.release_date_tv);
         TextView overviewTv = (TextView) findViewById(R.id.overview_tv);
+        Button testButton = (Button) findViewById(R.id.test_button);
 
         titleTv.setText(title);
         voteAvgTv.setText(Integer.toString(voteAverage) + OUT_OF_NUM);
@@ -61,6 +78,19 @@ public class DetailActivity extends AppCompatActivity {
                 .fit()
                 .into(posterIv);
 
+    }
+
+
+    public void testButtonClick(View view) {
+//        Log.d("ButtonClick", "Button Clicked");
+        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().insertMovie(favoriteMovie);
+                Log.d("DB", "Movie added");
+            }
+        });
     }
 
     private void closeOnError() {

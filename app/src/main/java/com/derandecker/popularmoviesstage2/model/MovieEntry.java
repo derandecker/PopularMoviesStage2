@@ -1,18 +1,29 @@
 package com.derandecker.popularmoviesstage2.model;
 
-public class Movie {
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+@Entity(tableName = "movie")
+public class MovieEntry {
+
+    @PrimaryKey
     private int id;
     private String title;
+    @ColumnInfo(name = "image_path")
     private String imagePath;
     private String overview;
+    @ColumnInfo(name = "vote_average")
     private int voteAverage;
+    @ColumnInfo(name = "release_date")
     private String releaseDate;
 
-    public Movie() {
+    @Ignore
+    public MovieEntry() {
     }
 
-    public Movie(int id, String title, String imagePath, String overview, int voteAverage, String releaseDate) {
+    public MovieEntry(int id, String title, String imagePath, String overview, int voteAverage, String releaseDate) {
         this.id = id;
         this.title = title;
         this.imagePath = imagePath;
