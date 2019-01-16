@@ -99,9 +99,6 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
     }
 
 
-
-    //problem here with onclick event
-    //It's pulling up incorrect movie object for the position sent to onclick listener
     class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView moviePic;
 
