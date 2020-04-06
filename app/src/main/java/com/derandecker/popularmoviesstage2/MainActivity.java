@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         setContentView(R.layout.activity_main);
 
         mMoviesPics = (RecyclerView) findViewById(R.id.rv_movies);
-
         GridLayoutManager gridLayoutManager =
                 new GridLayoutManager(this, spanSize);
         mMoviesPics.setLayoutManager(gridLayoutManager);
@@ -60,12 +59,16 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         mMovie = new MovieImageAdapter(this, this);
         mMoviesPics.setAdapter(mMovie);
 
-
         database = AppDatabase.getInstance(getApplicationContext());
 
         downloadMovies(MOVIE_URL_POPULAR, POPULAR);
+
 //        downloadMovies(MOVIE_URL_TOP_RATED, HIGHEST_RATED);
+
+        showPopularMovies();
+
     }
+
 
     private void downloadMovies(String url, final String option) {
         final URL movie_url = NetworkUtils.buildUrl(url);
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
             @Override
             public void run() {
                 try {
-                    //                switch (option) {
+//                    switch (option) {
 //                    case POPULAR:
 //                        boolean a = true;
 //                        boolean b = false;
@@ -92,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
             }
 
         });
-//        showPopularMovies();
-
     }
 
 

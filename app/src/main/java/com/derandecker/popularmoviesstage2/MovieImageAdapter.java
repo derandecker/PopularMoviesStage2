@@ -64,12 +64,11 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public int getItemCount() {
-//        if (faveMovies == null) {
-//            return 0;
-//        } else {
-//            return faveMovies.size();
-//        }
-        return 20;
+        if (faveMovies == null) {
+            return 0;
+        } else {
+            return faveMovies.size();
+        }
     }
 
 
