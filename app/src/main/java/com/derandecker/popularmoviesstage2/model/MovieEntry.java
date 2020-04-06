@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "movie")
 public class MovieEntry {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     @ColumnInfo(name = "image_path")
@@ -18,22 +18,42 @@ public class MovieEntry {
     private int voteAverage;
     @ColumnInfo(name = "release_date")
     private String releaseDate;
+    private boolean popular;
+    private boolean highestRated;
+    private boolean fave;
 
     @Ignore
     public MovieEntry() {
     }
 
-    public MovieEntry(int id, String title, String imagePath, String overview, int voteAverage, String releaseDate) {
+    @Ignore
+    public MovieEntry(String title, String imagePath, String overview,
+                      int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
+        this.title = title;
+        this.imagePath = imagePath;
+        this.overview = overview;
+        this.voteAverage = voteAverage;
+        this.releaseDate = releaseDate;
+        this.popular = popular;
+        this.highestRated = highestRated;
+        this.fave = fave;
+    }
+
+    public MovieEntry(int id, String title, String imagePath, String overview,
+                      int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
         this.id = id;
         this.title = title;
         this.imagePath = imagePath;
         this.overview = overview;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
+        this.popular = popular;
+        this.highestRated = highestRated;
+        this.fave = fave;
     }
 
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -45,15 +65,31 @@ public class MovieEntry {
         return imagePath;
     }
 
-    public String getOverview(){
+    public String getOverview() {
         return overview;
     }
 
-    public int getVoteAverage(){
+    public int getVoteAverage() {
         return voteAverage;
     }
 
-    public String getReleaseDate(){
+    public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public Boolean getPopular(){
+        return popular;
+    }
+
+    public Boolean getHighestRated(){
+        return highestRated;
+    }
+
+    public Boolean getFave() {
+        return fave;
+    }
+
+    public void setFave(Boolean favorite){
+        this.fave = favorite;
     }
 }

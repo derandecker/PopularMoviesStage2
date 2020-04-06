@@ -3,13 +3,16 @@ package com.derandecker.popularmoviesstage2;
 import android.arch.lifecycle.LiveData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
@@ -23,6 +26,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_OVERVIEW = "extra_overview";
     public static final String EXTRA_VOTE_AVERAGE = "extra_vote_average";
     public static final String EXTRA_RELEASE_DATE = "extra_release_date";
+    public static final String FAVE = "fave";
 
     private static final String OUT_OF_NUM = "/10";
 
@@ -39,6 +43,8 @@ public class DetailActivity extends AppCompatActivity {
     private String overview;
     private int voteAverage;
     private String releaseDate;
+    private Boolean fave;
+    ToggleButton toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
+
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -58,13 +65,40 @@ public class DetailActivity extends AppCompatActivity {
         overview = intent.getStringExtra(EXTRA_OVERVIEW);
         voteAverage = intent.getIntExtra(EXTRA_VOTE_AVERAGE, DEFAULT_INT);
         releaseDate = intent.getStringExtra(EXTRA_RELEASE_DATE);
+        fave = intent.getBooleanExtra(FAVE, false);
+
+//        toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
+//        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+//        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked){
+//                    toggleButtonChecked();
+//                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.star_filled));
+//                }
+//                else{
+//                    toggleButtonUnChecked();
+//                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+//                }
+//            }
+//        });
+//
+//        if(fave){
+//            toggleButton.setChecked(true);
+//        }
+//        else{
+//            toggleButton.setChecked(false);
+//        }
+
+
+
+
 
         TextView titleTv = (TextView) findViewById(R.id.title_tv);
         ImageView posterIv = (ImageView) findViewById(R.id.poster_iv);
         TextView voteAvgTv = (TextView) findViewById(R.id.vote_average_tv);
         TextView releaseDateTv = (TextView) findViewById(R.id.release_date_tv);
         TextView overviewTv = (TextView) findViewById(R.id.overview_tv);
-        Button testButton = (Button) findViewById(R.id.test_button);
 
         titleTv.setText(title);
         voteAvgTv.setText(Integer.toString(voteAverage) + OUT_OF_NUM);
@@ -81,17 +115,26 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    public void testButtonClick(View view) {
-//        Log.d("ButtonClick", "Button Clicked");
-        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mDb.movieDao().insertMovie(favoriteMovie);
-                Log.d("DB", "Movie added");
-            }
-        });
-    }
+//    public void toggleButtonChecked() {
+//        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate, true);
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                mDb.movieDao().insertMovie(favoriteMovie);
+//            }
+//        });
+//    }
+//
+//    public void toggleButtonUnChecked() {
+//        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate, fave);
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                mDb.movieDao().deleteMovie(favoriteMovie);
+//            }
+//        });
+//
+//    }
 
     private void closeOnError() {
         finish();

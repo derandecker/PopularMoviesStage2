@@ -10,17 +10,18 @@ import com.derandecker.popularmoviesstage2.model.MovieEntry;
 
 import java.util.List;
 
-public class FavoriteMoviesViewModel extends AndroidViewModel {
+public class HighestRatedMoviesViewModel extends AndroidViewModel {
 
     private LiveData<List<MovieEntry>> movies;
-    private Boolean fave = true;
-    public FavoriteMoviesViewModel(@NonNull Application application) {
+    private Boolean highestRated = true;
+
+    public HighestRatedMoviesViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        movies = database.movieDao().loadFaveMovies(fave);
+        movies = database.movieDao().loadHighestRatedMovies(highestRated);
     }
 
-    public LiveData<List<MovieEntry>> getFavoriteMovies() {
+    public LiveData<List<MovieEntry>> getHighestRatedMovies() {
         return movies;
     }
 

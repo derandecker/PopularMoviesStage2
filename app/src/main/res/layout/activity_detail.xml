@@ -47,12 +47,12 @@
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/test_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="testButtonClick"
-                    android:text="ADD FAV" />
+                <ToggleButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/myToggleButton"
+                    android:textOn=""
+                    android:textOff=""/>
                 <TextView
                     android:id="@+id/vote_average_label"
                     android:layout_width="wrap_content"

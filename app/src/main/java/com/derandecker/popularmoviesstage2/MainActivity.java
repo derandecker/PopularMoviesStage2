@@ -1,6 +1,6 @@
 package com.derandecker.popularmoviesstage2;
 
-import android.arch.lifecycle.LiveData;
+import android.accounts.NetworkErrorException;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -14,11 +14,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
@@ -29,14 +31,24 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+//star_empty.png and star_filled.png in drawable folder are FREE under license https://creativecommons.org/licenses/by-nd/3.0/
+//via https://icons8.com/license
+
 public class MainActivity extends AppCompatActivity implements MovieImageAdapter.MovieClickListener {
 
     private String movieString;
     private RecyclerView mMoviesPics;
     private MovieImageAdapter mMovie;
+    private int spanSize = 3;
+    private Boolean fave;
+    AppDatabase database;
+    private static final String FAVORITES = "favorites";
+    private static final String POPULAR = "popular";
+    private static final String HIGHEST_RATED = "highest_rated";
     private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
     private static final String DEFAULT_URL = "https://api.themoviedb.org/3/movie/popular";
+    List<MovieEntry> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +57,51 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
         mMoviesPics = (RecyclerView) findViewById(R.id.rv_movies);
 
-        int spanSize = 3;
-
         GridLayoutManager gridLayoutManager =
                 new GridLayoutManager(this, spanSize);
         mMoviesPics.setLayoutManager(gridLayoutManager);
         mMoviesPics.setHasFixedSize(true);
+        mMovie = new MovieImageAdapter(this, this);
+        mMoviesPics.setAdapter(mMovie);
 
-        setOption(DEFAULT_URL);
+
+        database = AppDatabase.getInstance(getApplicationContext());
+
+        downloadMovies(MOVIE_URL_POPULAR, POPULAR);
+//        downloadMovies(MOVIE_URL_TOP_RATED, HIGHEST_RATED);
     }
 
-    private void setOption(String sortBy) {
-        URL movie_url = NetworkUtils.buildUrl(sortBy);
-        new TmdbMovieTask().execute(movie_url);
+    private void downloadMovies(String url, final String option) {
+        final URL movie_url = NetworkUtils.buildUrl(url);
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //                switch (option) {
+//                    case POPULAR:
+//                        boolean a = true;
+//                        boolean b = false;
+//                    case HIGHEST_RATED:
+//                        a = false;
+//                        b = true;
+//
+                    movieString = NetworkUtils.getResponseFromHttpUrl(movie_url);
+                    boolean a = true;
+                    boolean b = false;
+                    movies = JSONUtils.parseMovieJson(movieString, a, b);
+                    database.movieDao().insertMovies(movies);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+//        showPopularMovies();
+
     }
+
 
     private void showFavorites() {
-        mMovie = new MovieImageAdapter(this, null, this);
-        mMoviesPics.setAdapter(mMovie);
         FavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(FavoriteMoviesViewModel.class);
         viewModel.getFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
@@ -72,10 +111,25 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         });
     }
 
-    private void populateUI(String tmdbMovies) {
-        MovieImageAdapter mMovie = new MovieImageAdapter(this, tmdbMovies, this);
-        mMoviesPics.setAdapter(mMovie);
-        this.movieString = tmdbMovies;
+    private void showPopularMovies() {
+        PopularMoviesViewModel viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
+        viewModel.getPopularMovies().observe(this, new Observer<List<MovieEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieEntry> movieEntries) {
+                Log.d("showPopularMovies()", "Updating list of Popular Movies from LiveData in ViewModel");
+                mMovie.setMovies(movieEntries);
+            }
+        });
+    }
+
+    private void showHighestRatedMovies() {
+        HighestRatedMoviesViewModel viewModel = ViewModelProviders.of(this).get(HighestRatedMoviesViewModel.class);
+        viewModel.getHighestRatedMovies().observe(this, new Observer<List<MovieEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieEntry> movieEntries) {
+                mMovie.setMovies(movieEntries);
+            }
+        });
     }
 
     private boolean isOnline() {
@@ -86,76 +140,14 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     }
 
 
-//  *****************************************************************************************
-//  instead of sending extras individually, send movie ID via putextra intent
-//  then use that ID in detail activity to get movie using viewmodel
-//    ALSO --- use saved instance state (in onresume?) to restore main activity
-//             to the list the user was looking at before detail activity intent was started
-//    ALSO --- change "ADD FAV" button to a star that is connected to LiveData and shows solid when
-//             the movie is a favorite and removes movie from faves DB when clicked
-//    ALSO --- still need to add trailers and reviews and change layout to constraint layout
-//             and move
-//  *****************************************************************************************
-
     @Override
-    public void onListItemClick(List<MovieEntry> faveMovies, boolean faves, int clickedItemIndex) {
-        MovieEntry movie = null;
-        if (faves) {
-            movie = faveMovies.get(clickedItemIndex);
-            //send intent using ID
-            //in detail activity if EXTRA_ID exists, it will pull data from viewmodel
-        } else {
-            try {
-                movie = JSONUtils.parseMovieJson(movieString, clickedItemIndex);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            //send movie object with intent with parcleable
-            //in detail activity if EXTRA_ID doesn't exist, it will pull data from parcleable
-        }
-        //this code will be removed
-        if (movie != null) {
-            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_ID, movie.getId());
-            intent.putExtra(DetailActivity.EXTRA_TITLE, movie.getTitle());
-            intent.putExtra(DetailActivity.EXTRA_IMAGE_PATH, movie.getImagePath());
-            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, movie.getOverview());
-            intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE, movie.getVoteAverage());
-            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, movie.getReleaseDate());
-            startActivity(intent);
-        }
-
+    public void onListItemClick(List<MovieEntry> faveMovies, int clickedItemIndex) {
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        MovieEntry movie = faveMovies.get(clickedItemIndex);
+        intent.putExtra(DetailActivity.EXTRA_ID, movie.getId());
+        startActivity(intent);
     }
 
-
-    public class TmdbMovieTask extends AsyncTask<URL, Void, String> {
-
-        @Override
-        protected String doInBackground(URL... params) {
-            String movieString;
-            URL url = params[0];
-            if (isOnline()) {
-                try {
-                    movieString = NetworkUtils.getResponseFromHttpUrl(url);
-                    return movieString;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String tmdbMovies) {
-            if (tmdbMovies != null) {
-                populateUI(tmdbMovies);
-            } else {
-                Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,15 +161,21 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         int id = item.getItemId();
         switch (id) {
             case R.id.popular:
-                setOption(MOVIE_URL_POPULAR);
+                showPopularMovies();
                 return true;
             case R.id.highest_rated:
-                setOption(MOVIE_URL_TOP_RATED);
+                showHighestRatedMovies();
                 return true;
             case R.id.favorites:
                 showFavorites();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

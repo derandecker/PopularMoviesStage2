@@ -20,23 +20,20 @@ import java.util.List;
 public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.ImageViewHolder> {
     private LayoutInflater inflater;
     private Context context;
-    private String movies;
     private List<MovieEntry> faveMovies;
-    private boolean faves;
     final private MovieClickListener mOnClickListener;
     private MovieEntry movie;
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185/";
 
     public interface MovieClickListener {
-        void onListItemClick(List<MovieEntry> faveMovies, boolean faves, int clickedItemIndex);
+        void onListItemClick(List<MovieEntry> faveMovies, int clickedItemIndex);
     }
 
-    public MovieImageAdapter(Context context, String movies, MovieClickListener listener) {
+    public MovieImageAdapter(Context context, MovieClickListener listener) {
         inflater = LayoutInflater.from(context);
         mOnClickListener = listener;
         this.context = context;
-        this.movies = movies;
     }
 
     @Override
@@ -48,24 +45,13 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        if (faves) {
-            displayFavoriteMovies(holder, position);
-        } else if (movies != null) {
-            displayNetworkAPIMovies(holder, position);
-        }
-    }
-
-    private void displayNetworkAPIMovies(ImageViewHolder holder, int position) {
-        try {
-            movie = JSONUtils.parseMovieJson(movies, position);
-            setMoviePicHolder(holder, movie);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        displayFavoriteMovies(holder, position);
     }
 
     private void displayFavoriteMovies(ImageViewHolder holder, int position) {
         movie = faveMovies.get(position);
+        //this is coming back as null, which means movies aren't getting added into db
+        //or aren't reading from it properly
         setMoviePicHolder(holder, movie);
     }
 
@@ -81,20 +67,17 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public int getItemCount() {
-        if (faves) {
-            if (faveMovies == null) {
-                return 0;
-            } else {
-                return faveMovies.size();
-            }
-        }
+//        if (faveMovies == null) {
+//            return 0;
+//        } else {
+//            return faveMovies.size();
+//        }
         return 20;
     }
 
 
     public void setMovies(List<MovieEntry> movieEntries) {
         faveMovies = movieEntries;
-        faves = true;
         notifyDataSetChanged();
     }
 
@@ -111,7 +94,7 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(faveMovies, faves, clickedPosition);
+            mOnClickListener.onListItemClick(faveMovies, clickedPosition);
         }
     }
 

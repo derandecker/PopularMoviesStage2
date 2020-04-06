@@ -12,7 +12,7 @@ import com.derandecker.popularmoviesstage2.model.MovieEntry;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "favoritemovies";
+    private static final String DATABASE_NAME = "movies";
     private static AppDatabase sInstance;
 
     public static AppDatabase getInstance(Context context) {
@@ -20,6 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
+//                        .fallbackToDestructiveMigration()
                         .build();
             }
         }

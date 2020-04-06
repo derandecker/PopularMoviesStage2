@@ -5,12 +5,12 @@ import android.arch.lifecycle.ViewModelProvider;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 
-public class AddFavoriteMovieViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class MovieDetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final AppDatabase mDb;
     private final int mMovieId;
 
-    public AddFavoriteMovieViewModelFactory(AppDatabase database, int movieId) {
+    public MovieDetailViewModelFactory(AppDatabase database, int movieId) {
         mDb = database;
         mMovieId = movieId;
     }
