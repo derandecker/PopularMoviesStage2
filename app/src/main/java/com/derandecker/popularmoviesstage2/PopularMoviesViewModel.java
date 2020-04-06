@@ -1,20 +1,13 @@
 package com.derandecker.popularmoviesstage2;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.graphics.Movie;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
-import com.derandecker.popularmoviesstage2.utils.JSONUtils;
-import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 public class PopularMoviesViewModel extends AndroidViewModel {

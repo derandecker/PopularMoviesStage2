@@ -1,21 +1,17 @@
 package com.derandecker.popularmoviesstage2;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
-import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
@@ -105,7 +101,7 @@ public class DetailActivity extends AppCompatActivity {
         releaseDateTv.setText(releaseDate);
         overviewTv.setText(overview);
 
-        Picasso.with(this)
+        Picasso.get()
                 .load(BASE_URL + IMAGE_SIZE + imagePath)
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)

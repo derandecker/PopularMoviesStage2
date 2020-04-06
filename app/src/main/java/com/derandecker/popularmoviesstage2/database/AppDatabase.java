@@ -1,10 +1,9 @@
 package com.derandecker.popularmoviesstage2.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.graphics.Movie;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 

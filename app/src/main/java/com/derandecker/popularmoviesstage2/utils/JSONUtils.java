@@ -1,14 +1,11 @@
 package com.derandecker.popularmoviesstage2.utils;
 
-import android.graphics.Movie;
-
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.arch.lifecycle.LiveData;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,18 +1,15 @@
 package com.derandecker.popularmoviesstage2;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
-import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
     }
 
     private void setMoviePicHolder(ImageViewHolder holder, MovieEntry movie) {
-        Picasso.with(context)
+        Picasso.get()
                 .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)
