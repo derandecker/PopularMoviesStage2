@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 //        downloadMovies(MOVIE_URL_TOP_RATED, HIGHEST_RATED);
 
-        showPopularMovies();
+//        showPopularMovies();
 
     }
 
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
                     boolean b = false;
                     movies = JSONUtils.parseMovieJson(movieString, a, b);
                     database.movieDao().insertMovies(movies);
+
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -113,8 +114,9 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         viewModel.getPopularMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
-                Log.d("showPopularMovies()", "Updating list of Popular Movies from LiveData in ViewModel");
+//                Log.d("showPopularMovies()", "Updating list of Popular Movies from LiveData in ViewModel");
                 mMovie.setMovies(movieEntries);
+                Log.d("showPopularMovies()", movieEntries.get(0).getTitle());
             }
         });
     }
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
                 mMovie.setMovies(movieEntries);
+                Log.d("showHighestRated()", movieEntries.get(0).getTitle());
             }
         });
     }

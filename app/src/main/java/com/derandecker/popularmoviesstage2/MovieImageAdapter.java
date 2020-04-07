@@ -3,6 +3,7 @@ package com.derandecker.popularmoviesstage2;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static java.security.AccessController.getContext;
+
 
 public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.ImageViewHolder> {
     private LayoutInflater inflater;
@@ -20,8 +23,8 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
     private List<MovieEntry> faveMovies;
     final private MovieClickListener mOnClickListener;
     private MovieEntry movie;
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/";
-    private static final String IMAGE_SIZE = "w185/";
+    private static final String BASE_URL = "https://image.tmdb.org/t/p/";
+    private static final String IMAGE_SIZE = "w185";
 
     public interface MovieClickListener {
         void onListItemClick(List<MovieEntry> faveMovies, int clickedItemIndex);
@@ -47,14 +50,13 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     private void displayFavoriteMovies(ImageViewHolder holder, int position) {
         movie = faveMovies.get(position);
-        //this is coming back as null, which means movies aren't getting added into db
-        //or aren't reading from it properly
         setMoviePicHolder(holder, movie);
     }
 
     private void setMoviePicHolder(ImageViewHolder holder, MovieEntry movie) {
+        String path = BASE_URL + IMAGE_SIZE + movie.getImagePath();
         Picasso.get()
-                .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
+                .load(path)
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)
                 .fit()
