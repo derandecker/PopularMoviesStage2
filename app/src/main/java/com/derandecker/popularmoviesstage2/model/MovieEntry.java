@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "movie")
 public class MovieEntry {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     private String title;
     @ColumnInfo(name = "image_path")
@@ -26,18 +26,19 @@ public class MovieEntry {
     public MovieEntry() {
     }
 
-    @Ignore
-    public MovieEntry(String title, String imagePath, String overview,
-                      int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
-        this.title = title;
-        this.imagePath = imagePath;
-        this.overview = overview;
-        this.voteAverage = voteAverage;
-        this.releaseDate = releaseDate;
-        this.popular = popular;
-        this.highestRated = highestRated;
-        this.fave = fave;
-    }
+//    PROBABLY NOT NEEDED!
+//    @Ignore
+//    public MovieEntry(String title, String imagePath, String overview,
+//                      int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
+//        this.title = title;
+//        this.imagePath = imagePath;
+//        this.overview = overview;
+//        this.voteAverage = voteAverage;
+//        this.releaseDate = releaseDate;
+//        this.popular = popular;
+//        this.highestRated = highestRated;
+//        this.fave = fave;
+//    }
 
     public MovieEntry(int id, String title, String imagePath, String overview,
                       int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {

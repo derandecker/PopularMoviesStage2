@@ -22,13 +22,14 @@ public class JSONUtils {
         Boolean fave = false;
         for (int i = 0; i < results.length(); i++) {
             JSONObject movieDetail = results.getJSONObject(i);
+            int id = movieDetail.getInt("id");
             String title = movieDetail.getString("title");
             String imagePath = movieDetail.getString("poster_path");
             String overview = movieDetail.getString("overview");
             int voteAverage = movieDetail.getInt("vote_average");
             String releaseDate = movieDetail.getString("release_date");
 
-            currentMovie = new MovieEntry(title, imagePath, overview, voteAverage,
+            currentMovie = new MovieEntry(id, title, imagePath, overview, voteAverage,
                     releaseDate, popular, highestRated, fave);
             movies.add(currentMovie);
         }
