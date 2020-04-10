@@ -2,15 +2,18 @@ package com.derandecker.popularmoviesstage2;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,13 +41,22 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     private int spanSize = 3;
     private Boolean fave;
     AppDatabase database;
+    private static final String OUT_STATE_POPULAR = "out_state_popular";
+    private static final String OUT_STATE_HIGHEST_RATED = "out_state_highest_rated";
+    private static final String OUT_STATE_FAVORITES = "out_state_favorites";
     private static final String FAVORITES = "favorites";
-    private static final String POPULAR = "popular";
-    private static final String HIGHEST_RATED = "highest_rated";
+    public static final boolean POPULAR = true;
+    public static final boolean HIGHEST_RATED = true;
     private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
     private static final String DEFAULT_URL = "https://api.themoviedb.org/3/movie/popular";
     List<MovieEntry> movies;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,33 +73,21 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
         database = AppDatabase.getInstance(getApplicationContext());
 
-        downloadMovies(MOVIE_URL_POPULAR, POPULAR);
-
-//        downloadMovies(MOVIE_URL_TOP_RATED, HIGHEST_RATED);
 
 //        showPopularMovies();
 
     }
 
 
-    private void downloadMovies(String url, final String option) {
+    private void downloadMovies(String url, final boolean popular, final boolean highestRated) {
         final URL movie_url = NetworkUtils.buildUrl(url);
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
                 try {
-//                    switch (option) {
-//                    case POPULAR:
-//                        boolean a = true;
-//                        boolean b = false;
-//                    case HIGHEST_RATED:
-//                        a = false;
-//                        b = true;
-//
+
                     movieString = NetworkUtils.getResponseFromHttpUrl(movie_url);
-                    boolean a = true;
-                    boolean b = false;
-                    movies = JSONUtils.parseMovieJson(movieString, a, b);
+                    movies = JSONUtils.parseMovieJson(movieString, popular, highestRated);
                     database.movieDao().insertMovies(movies);
 
                 } catch (IOException | JSONException e) {
@@ -110,24 +110,25 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     }
 
     private void showPopularMovies() {
+        downloadMovies(MOVIE_URL_POPULAR, POPULAR, false);
         PopularMoviesViewModel viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
         viewModel.getPopularMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
-//                Log.d("showPopularMovies()", "Updating list of Popular Movies from LiveData in ViewModel");
                 mMovie.setMovies(movieEntries);
-                Log.d("showPopularMovies()", movieEntries.get(0).getTitle());
+//                Log.d("showPopularMovies()", movieEntries.get(0).getTitle());
             }
         });
     }
 
     private void showHighestRatedMovies() {
+        downloadMovies(MOVIE_URL_TOP_RATED, false, HIGHEST_RATED);
         HighestRatedMoviesViewModel viewModel = ViewModelProviders.of(this).get(HighestRatedMoviesViewModel.class);
         viewModel.getHighestRatedMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
                 mMovie.setMovies(movieEntries);
-                Log.d("showHighestRated()", movieEntries.get(0).getTitle());
+//                Log.d("showHighestRated()", movieEntries.get(0).getTitle());
             }
         });
     }

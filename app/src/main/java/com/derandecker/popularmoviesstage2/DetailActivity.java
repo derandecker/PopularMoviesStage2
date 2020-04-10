@@ -1,10 +1,13 @@
 package com.derandecker.popularmoviesstage2;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,21 +15,24 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
+import com.derandecker.popularmoviesstage2.model.MovieEntry;
+import com.derandecker.popularmoviesstage2.utils.JSONUtils;
+import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_TITLE = "extra_title";
-    public static final String EXTRA_IMAGE_PATH = "extra_image_path";
-    public static final String EXTRA_OVERVIEW = "extra_overview";
-    public static final String EXTRA_VOTE_AVERAGE = "extra_vote_average";
-    public static final String EXTRA_RELEASE_DATE = "extra_release_date";
     public static final String FAVE = "fave";
 
     private static final String OUT_OF_NUM = "/10";
 
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/";
+    private static final String BASE_URL = "https://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185/";
 
     private static final int DEFAULT_INT = 0;
@@ -34,12 +40,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private AppDatabase mDb;
     private int id;
-    private String title;
-    private String imagePath;
-    private String overview;
-    private int voteAverage;
-    private String releaseDate;
-    private Boolean fave;
     ToggleButton toggleButton;
 
     @Override
@@ -49,22 +49,20 @@ public class DetailActivity extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
+//      TODO:
+//      use databinding to set UI fields
+
+
 
         Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
         }
-
         id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
-        title = intent.getStringExtra(EXTRA_TITLE);
-        imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH);
-        overview = intent.getStringExtra(EXTRA_OVERVIEW);
-        voteAverage = intent.getIntExtra(EXTRA_VOTE_AVERAGE, DEFAULT_INT);
-        releaseDate = intent.getStringExtra(EXTRA_RELEASE_DATE);
-        fave = intent.getBooleanExtra(FAVE, false);
 
-//        toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
-//        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+        toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
+        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+
 //        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -87,7 +85,22 @@ public class DetailActivity extends AppCompatActivity {
 //        }
 
 
+        MovieDetailViewModelFactory factory = new MovieDetailViewModelFactory(mDb, id);
+            final MovieDetailViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
+            viewModel.getMovie().observe(this, new Observer<MovieEntry>() {
+                @Override
+                public void onChanged(@Nullable MovieEntry movie) {
+                    viewModel.getMovie().removeObserver(this);
+                    populateUI(movie);
+                }
+            });
 
+    }
+
+    private void populateUI(MovieEntry movie) {
+        if (movie == null) {
+            return;
+        }
 
 
         TextView titleTv = (TextView) findViewById(R.id.title_tv);
@@ -96,13 +109,13 @@ public class DetailActivity extends AppCompatActivity {
         TextView releaseDateTv = (TextView) findViewById(R.id.release_date_tv);
         TextView overviewTv = (TextView) findViewById(R.id.overview_tv);
 
-        titleTv.setText(title);
-        voteAvgTv.setText(Integer.toString(voteAverage) + OUT_OF_NUM);
-        releaseDateTv.setText(releaseDate);
-        overviewTv.setText(overview);
+        titleTv.setText(movie.getTitle());
+        voteAvgTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
+        releaseDateTv.setText(movie.getReleaseDate());
+        overviewTv.setText(movie.getOverview());
 
         Picasso.get()
-                .load(BASE_URL + IMAGE_SIZE + imagePath)
+                .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)
                 .fit()

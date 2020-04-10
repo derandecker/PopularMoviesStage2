@@ -18,7 +18,7 @@ public class HighestRatedMoviesViewModel extends AndroidViewModel {
     public HighestRatedMoviesViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        movies = database.movieDao().loadHighestRatedMovies(highestRated);
+        movies = database.movieDao().loadHighestRatedMovies();
     }
 
     public LiveData<List<MovieEntry>> getHighestRatedMovies() {

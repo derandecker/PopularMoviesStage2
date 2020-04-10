@@ -10,6 +10,7 @@ public class MovieEntry {
 
     @PrimaryKey
     private int id;
+    private int order;
     private String title;
     @ColumnInfo(name = "image_path")
     private String imagePath;
@@ -19,6 +20,7 @@ public class MovieEntry {
     @ColumnInfo(name = "release_date")
     private String releaseDate;
     private boolean popular;
+    @ColumnInfo(name = "highest_rated")
     private boolean highestRated;
     private boolean fave;
 
@@ -40,9 +42,10 @@ public class MovieEntry {
 //        this.fave = fave;
 //    }
 
-    public MovieEntry(int id, String title, String imagePath, String overview,
+    public MovieEntry(int id, int order, String title, String imagePath, String overview,
                       int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
         this.id = id;
+        this.order = order;
         this.title = title;
         this.imagePath = imagePath;
         this.overview = overview;
@@ -57,6 +60,8 @@ public class MovieEntry {
     public int getId() {
         return id;
     }
+
+    public int getOrder() { return order;}
 
     public String getTitle() {
         return title;

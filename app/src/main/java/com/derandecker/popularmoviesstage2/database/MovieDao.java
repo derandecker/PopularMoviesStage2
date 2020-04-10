@@ -15,23 +15,23 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM movie WHERE popular = :popular ORDER BY title")
-    LiveData<List<MovieEntry>> loadPopularMovies(boolean popular);
+    @Query("SELECT * FROM movie WHERE popular ORDER BY `order`")
+    LiveData<List<MovieEntry>> loadPopularMovies();
 
-    @Query("SELECT * FROM movie WHERE popular = :highestRated ORDER BY title")
-    LiveData<List<MovieEntry>> loadHighestRatedMovies(boolean highestRated);
+    @Query("SELECT * FROM movie WHERE highest_rated ORDER BY `order`")
+    LiveData<List<MovieEntry>> loadHighestRatedMovies();
 
-    @Query("SELECT * FROM movie WHERE fave = :fave ORDER BY title")
-    LiveData<List<MovieEntry>> loadFaveMovies(boolean fave);
+    @Query("SELECT * FROM movie WHERE fave ORDER BY title")
+    LiveData<List<MovieEntry>> loadFaveMovies();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMovies(List<MovieEntry> movies);
 
-//    @Update(onConflict = OnConflictStrategy.REPLACE)
-//    void updateMovie(MovieEntry movieEntry);
+    @Update
+    void updateMovie(List<MovieEntry> movies);
 
-    @Query("DELETE FROM movie WHERE fave != :boolTrue")
-    void deleteAllExceptFaves(boolean boolTrue);
+    @Query("DELETE FROM movie WHERE NOT fave")
+    void deleteAllExceptFaves();
 
     @Query("SELECT * FROM movie WHERE id = :id")
     LiveData<MovieEntry> loadMovieById(int id);
