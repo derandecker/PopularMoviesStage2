@@ -15,6 +15,12 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertMovies(List<MovieEntry> movies);
+
+    @Query("SELECT * FROM movie WHERE id = :id")
+    LiveData<MovieEntry> loadMovieById(int id);
+
     @Query("SELECT * FROM movie WHERE popular ORDER BY `order`")
     LiveData<List<MovieEntry>> loadPopularMovies();
 
@@ -24,21 +30,10 @@ public interface MovieDao {
     @Query("SELECT * FROM movie WHERE fave ORDER BY title")
     LiveData<List<MovieEntry>> loadFaveMovies();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMovies(List<MovieEntry> movies);
-
     @Query("UPDATE movie SET fave = 1 WHERE id = :id")
     void setFavorite(int id);
 
     @Query("UPDATE movie SET fave = 0 WHERE id = :id")
     void removeFavorite(int id);
 
-    @Query("DELETE FROM movie WHERE highest_rated")
-    void deleteHighestRated();
-
-    @Query("DELETE FROM movie WHERE popular")
-    void deletePopular();
-
-    @Query("SELECT * FROM movie WHERE id = :id")
-    LiveData<MovieEntry> loadMovieById(int id);
 }

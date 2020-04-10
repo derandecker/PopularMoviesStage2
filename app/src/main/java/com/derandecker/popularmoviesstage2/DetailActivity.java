@@ -1,38 +1,29 @@
 package com.derandecker.popularmoviesstage2;
 
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
-import com.derandecker.popularmoviesstage2.utils.JSONUtils;
-import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
+import com.derandecker.popularmoviesstage2.utils.AppExecutors;
+import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModel;
+import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "extra_id";
-//    public static final String FAVE = "fave";
 
     private static final String OUT_OF_NUM = "/10";
 

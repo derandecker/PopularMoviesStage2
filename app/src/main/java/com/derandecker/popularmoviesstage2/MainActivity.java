@@ -20,8 +20,12 @@ import android.view.MenuItem;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
+import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
+import com.derandecker.popularmoviesstage2.viewmodels.GetFavoriteMoviesViewModel;
+import com.derandecker.popularmoviesstage2.viewmodels.HighestRatedMoviesViewModel;
+import com.derandecker.popularmoviesstage2.viewmodels.PopularMoviesViewModel;
 
 import org.json.JSONException;
 
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 //        TODO:
 //        showPopularMovies();
 //        replace this line with code to replace activity state with previous state
-//        it was in before opening detailactivity
+//        it was in before opening DetailActivity
 
     }
 

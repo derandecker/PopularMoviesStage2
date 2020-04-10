@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage2;
+package com.derandecker.popularmoviesstage2.utils;
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

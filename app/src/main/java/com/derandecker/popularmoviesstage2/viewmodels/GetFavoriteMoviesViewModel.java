@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage2;
+package com.derandecker.popularmoviesstage2.viewmodels;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
