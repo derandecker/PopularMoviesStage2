@@ -1,6 +1,6 @@
 # PopularMoviesStage2
 Project for Udacity Android Developer Nanodegree  
-**(No starter code was given for this project. Everything is my own work.)**
+**(No starter code was given for this project. Everything is my own work unless otherwise noted for open source files and boilerplate code.)**
 
 **FYI -- The code will run when compiled, but you must replace "BuildConfig.MY_API_KEY" in utils/NetworkUtils.java with the tmdb API KEY you obtain from https://www.themoviedb.org/settings/api **
 
