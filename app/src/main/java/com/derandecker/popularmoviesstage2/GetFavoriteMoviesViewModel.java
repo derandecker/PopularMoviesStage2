@@ -10,10 +10,10 @@ import com.derandecker.popularmoviesstage2.model.MovieEntry;
 
 import java.util.List;
 
-public class FavoriteMoviesViewModel extends AndroidViewModel {
+public class GetFavoriteMoviesViewModel extends AndroidViewModel {
 
     private LiveData<List<MovieEntry>> movies;
-    public FavoriteMoviesViewModel(@NonNull Application application) {
+    public GetFavoriteMoviesViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         movies = database.movieDao().loadFaveMovies();

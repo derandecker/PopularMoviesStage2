@@ -2,13 +2,16 @@ package com.derandecker.popularmoviesstage2;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,12 +26,13 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "extra_id";
-    public static final String FAVE = "fave";
+//    public static final String FAVE = "fave";
 
     private static final String OUT_OF_NUM = "/10";
 
@@ -49,11 +53,6 @@ public class DetailActivity extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-//      TODO:
-//      use databinding to set UI fields
-
-
-
         Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
@@ -63,45 +62,37 @@ public class DetailActivity extends AppCompatActivity {
         toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
         toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
 
-//        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked){
-//                    toggleButtonChecked();
-//                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.star_filled));
-//                }
-//                else{
-//                    toggleButtonUnChecked();
-//                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
-//                }
-//            }
-//        });
-//
-//        if(fave){
-//            toggleButton.setChecked(true);
-//        }
-//        else{
-//            toggleButton.setChecked(false);
-//        }
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    toggleButtonChecked();
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
+                } else {
+                    toggleButtonUnChecked();
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+                }
+            }
+        });
 
 
         MovieDetailViewModelFactory factory = new MovieDetailViewModelFactory(mDb, id);
-            final MovieDetailViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
-            viewModel.getMovie().observe(this, new Observer<MovieEntry>() {
-                @Override
-                public void onChanged(@Nullable MovieEntry movie) {
-                    viewModel.getMovie().removeObserver(this);
-                    populateUI(movie);
-                }
-            });
+        final MovieDetailViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
+        viewModel.getMovie().observe(this, new Observer<MovieEntry>() {
+            @Override
+            public void onChanged(@Nullable MovieEntry movie) {
+                viewModel.getMovie().removeObserver(this);
+                populateUI(movie);
+            }
+        });
 
     }
+
 
     private void populateUI(MovieEntry movie) {
         if (movie == null) {
             return;
         }
-
 
         TextView titleTv = (TextView) findViewById(R.id.title_tv);
         ImageView posterIv = (ImageView) findViewById(R.id.poster_iv);
@@ -114,6 +105,9 @@ public class DetailActivity extends AppCompatActivity {
         releaseDateTv.setText(movie.getReleaseDate());
         overviewTv.setText(movie.getOverview());
 
+//      TODO:
+//      Change download and error placeholders to something
+//      more aesthetically appealing
         Picasso.get()
                 .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
                 .placeholder(R.drawable.downloading)
@@ -121,29 +115,34 @@ public class DetailActivity extends AppCompatActivity {
                 .fit()
                 .into(posterIv);
 
+        if (movie.getFave()) {
+            toggleButton.setChecked(true);
+        } else {
+            toggleButton.setChecked(false);
+        }
+
     }
 
 
-//    public void toggleButtonChecked() {
-//        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate, true);
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                mDb.movieDao().insertMovie(favoriteMovie);
-//            }
-//        });
-//    }
-//
-//    public void toggleButtonUnChecked() {
-//        final MovieEntry favoriteMovie = new MovieEntry(id, title, imagePath, overview, voteAverage, releaseDate, fave);
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                mDb.movieDao().deleteMovie(favoriteMovie);
-//            }
-//        });
-//
-//    }
+    public void toggleButtonChecked() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().setFavorite(id);
+            }
+
+        });
+    }
+
+    public void toggleButtonUnChecked() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().removeFavorite(id);
+            }
+
+        });
+    }
 
     private void closeOnError() {
         finish();

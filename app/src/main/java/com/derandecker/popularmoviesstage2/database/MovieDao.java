@@ -27,11 +27,17 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMovies(List<MovieEntry> movies);
 
-    @Update
-    void updateMovie(List<MovieEntry> movies);
+    @Query("UPDATE movie SET fave = 1 WHERE id = :id")
+    void setFavorite(int id);
 
-    @Query("DELETE FROM movie WHERE NOT fave")
-    void deleteAllExceptFaves();
+    @Query("UPDATE movie SET fave = 0 WHERE id = :id")
+    void removeFavorite(int id);
+
+    @Query("DELETE FROM movie WHERE highest_rated")
+    void deleteHighestRated();
+
+    @Query("DELETE FROM movie WHERE popular")
+    void deletePopular();
 
     @Query("SELECT * FROM movie WHERE id = :id")
     LiveData<MovieEntry> loadMovieById(int id);

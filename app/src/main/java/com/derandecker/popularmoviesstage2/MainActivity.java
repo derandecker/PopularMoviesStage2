@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     private String movieString;
     private RecyclerView mMoviesPics;
     private MovieImageAdapter mMovie;
+
+//  TODO:
+//  add code to make spanSize larger for bigger screens
+
     private int spanSize = 3;
     private Boolean fave;
     AppDatabase database;
@@ -74,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         database = AppDatabase.getInstance(getApplicationContext());
 
 
+//        TODO:
 //        showPopularMovies();
+//        replace this line with code to replace activity state with previous state
+//        it was in before opening detailactivity
 
     }
 
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
     private void showFavorites() {
-        FavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(FavoriteMoviesViewModel.class);
+        GetFavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(GetFavoriteMoviesViewModel.class);
         viewModel.getFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
