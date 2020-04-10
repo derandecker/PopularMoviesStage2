@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -82,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
 //        TODO:
-//        showPopularMovies();
-//        replace this line with code to replace activity state with previous state
-//        it was in before opening DetailActivity
+//          showPopularMovies();
+//          replace this line with code to replace activity state with previous state
+//          it was in before opening DetailActivity
 
     }
 

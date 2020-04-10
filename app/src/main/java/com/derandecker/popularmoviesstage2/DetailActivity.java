@@ -97,8 +97,8 @@ public class DetailActivity extends AppCompatActivity {
         overviewTv.setText(movie.getOverview());
 
 //      TODO:
-//      Change download and error placeholders to something
-//      more aesthetically appealing
+//          Change download and error placeholders to something
+//          more aesthetically appealing
         Picasso.get()
                 .load(BASE_URL + IMAGE_SIZE + movie.getImagePath())
                 .placeholder(R.drawable.downloading)
