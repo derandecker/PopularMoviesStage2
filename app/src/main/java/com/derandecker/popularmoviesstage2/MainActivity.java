@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,11 +61,22 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
     private static final String DEFAULT_URL = "https://api.themoviedb.org/3/movie/popular";
+    private static final String RECYCLER_VIEW_STATE = "recycler_view_state";
     List<MovieEntry> movies;
+    Parcelable recyclerViewState = null;
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (recyclerViewState != null) {
+            mMoviesPics.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
     @Override
@@ -103,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
                     }
                     movies = JSONUtils.parseMovieJson(movieString, popular, highestRated);
                     database.movieDao().insertMovies(movies);
-
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -188,9 +200,17 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        recyclerViewState = mMoviesPics.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(RECYCLER_VIEW_STATE, recyclerViewState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            recyclerViewState = savedInstanceState.getParcelable(RECYCLER_VIEW_STATE);
     }
 }
