@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 //  TODO:
 //      add code to make spanSize larger for bigger screens
-//      make sure mainactivity reloads from where user left off
 
     private int spanSize = 3;
     private Boolean fave;

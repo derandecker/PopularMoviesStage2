@@ -13,8 +13,6 @@ import java.util.List;
 public class HighestRatedMoviesViewModel extends AndroidViewModel {
 
     private LiveData<List<MovieEntry>> movies;
-    private Boolean highestRated = true;
-
     public HighestRatedMoviesViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
