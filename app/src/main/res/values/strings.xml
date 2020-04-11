@@ -2,6 +2,7 @@
     <string name="app_name">Popular Movies Stage 2</string>
     <string name="detail_activity_label">Movie Details</string>
     <string name="detail_error_message">Data missing</string>
+    <string name="internet_connection_error">Internet Connection Error</string>
     <string name="vote_average_label">Average User Rating:</string>
     <string name="release_date_label">Released:</string>
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
@@ -95,8 +96,11 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
             @Override
             public void run() {
                 try {
-
-                    movieString = NetworkUtils.getResponseFromHttpUrl(movie_url);
+                    if (isOnline()) {
+                        movieString = NetworkUtils.getResponseFromHttpUrl(movie_url);
+                    } else {
+                        return;
+                    }
                     movies = JSONUtils.parseMovieJson(movieString, popular, highestRated);
                     database.movieDao().insertMovies(movies);
 
