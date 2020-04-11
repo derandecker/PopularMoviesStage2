@@ -97,11 +97,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
         database = AppDatabase.getInstance(getApplicationContext());
 
-
-//        TODO:
-//          showPopularMovies();
-//          replace this line with code to replace activity state with previous state
-//          it was in before opening DetailActivity
+        showPopularMovies();
 
     }
 
