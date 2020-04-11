@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("onCreate","MainActivity was recreated");
         setContentView(R.layout.activity_main);
 
         mMoviesPics = (RecyclerView) findViewById(R.id.rv_movies);
