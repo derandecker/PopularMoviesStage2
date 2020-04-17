@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
     private void showFavorites() {
-        GetFavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(GetFavoriteMoviesViewModel.class);
+        final GetFavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(GetFavoriteMoviesViewModel.class);
         viewModel.getFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
