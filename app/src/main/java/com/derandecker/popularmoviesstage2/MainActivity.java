@@ -22,9 +22,7 @@ import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
-import com.derandecker.popularmoviesstage2.viewmodels.GetFavoriteMoviesViewModel;
-import com.derandecker.popularmoviesstage2.viewmodels.HighestRatedMoviesViewModel;
-import com.derandecker.popularmoviesstage2.viewmodels.PopularMoviesViewModel;
+import com.derandecker.popularmoviesstage2.viewmodels.MainActivityViewModel;
 
 import org.json.JSONException;
 
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
     private void showFavorites() {
-        final GetFavoriteMoviesViewModel viewModel = ViewModelProviders.of(this).get(GetFavoriteMoviesViewModel.class);
+        final MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel.getFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
     private void showPopularMovies() {
         downloadMovies(MOVIE_URL_POPULAR, POPULAR, false);
-        PopularMoviesViewModel viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
+        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel.getPopularMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
     private void showHighestRatedMovies() {
         downloadMovies(MOVIE_URL_TOP_RATED, false, HIGHEST_RATED);
-        HighestRatedMoviesViewModel viewModel = ViewModelProviders.of(this).get(HighestRatedMoviesViewModel.class);
+        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel.getHighestRatedMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {

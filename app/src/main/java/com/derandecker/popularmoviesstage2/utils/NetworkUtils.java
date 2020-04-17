@@ -13,8 +13,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
-//    TODO:
-//      add api key back to build config file
     private static final String API_KEY = BuildConfig.MY_API_KEY;
 
     final private static String API_KEY_PARAM = "api_key";

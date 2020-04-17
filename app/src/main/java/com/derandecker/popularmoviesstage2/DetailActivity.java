@@ -104,7 +104,9 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-
+//TODO:
+//    try to do this work in the viewmodel
+//    so it doesn't reload when changing configurations
     private void downloadRelatedMovies(int movieId) {
         final URL movie_url = NetworkUtils.buildRelatedVideosUrl(VIDEOS_URL, movieId);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
