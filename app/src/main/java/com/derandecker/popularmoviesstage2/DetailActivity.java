@@ -18,10 +18,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
+import com.derandecker.popularmoviesstage2.model.RelatedVideos;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -115,6 +118,15 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             toggleButton.setChecked(false);
         }
+
+    }
+
+    private void populateRelatedVideos(ArrayList<RelatedVideos> relatedVideos) {
+        TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
+        TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
+
+        trailerOne.setText(relatedVideos.get(0).getName());
+        trailerTwo.setText(relatedVideos.get(1).getName());
 
     }
 

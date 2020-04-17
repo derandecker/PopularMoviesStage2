@@ -14,13 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
     private void downloadMovies(String url, final boolean popular, final boolean highestRated) {
-        final URL movie_url = NetworkUtils.buildUrl(url);
+        final URL movie_url = NetworkUtils.buildMoviesUrl(url);
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
