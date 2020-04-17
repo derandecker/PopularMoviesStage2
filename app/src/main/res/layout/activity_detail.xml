@@ -34,6 +34,7 @@
 
             <TextView
                 android:id="@+id/trailers_label"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -48,6 +49,7 @@
 
             <TextView
                 android:id="@+id/trailer_one_tv"
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -63,6 +65,7 @@
 
             <TextView
                 android:id="@+id/trailer_two_tv"
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"

@@ -51,7 +51,7 @@ public class JSONUtils {
         ArrayList<RelatedVideos> relatedVideos = new ArrayList<RelatedVideos>();
         RelatedVideos currentRelatedVideos;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < results.length(); i++) {
             JSONObject relatedVideoItem = results.getJSONObject(i);
             String key = relatedVideoItem.getString("key");
             String name = relatedVideoItem.getString("name");

@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactor
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -163,9 +165,17 @@ public class DetailActivity extends AppCompatActivity {
             public void run() {
                 TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
                 TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
+                TextView relatedTrailersLabel = (TextView) findViewById(R.id.trailers_label);
 
-                trailerOne.setText(relatedVideos.get(0).getName());
-                trailerTwo.setText(relatedVideos.get(1).getName());
+                try {
+                    trailerOne.setText(relatedVideos.get(0).getName());
+                    relatedTrailersLabel.setVisibility(View.VISIBLE);
+                    trailerOne.setVisibility(View.VISIBLE);
+                    trailerTwo.setText(relatedVideos.get(1).getName());
+                    trailerTwo.setVisibility(View.VISIBLE);
+                } catch (IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
             }
         });
     }
