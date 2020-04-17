@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -25,16 +26,15 @@ import com.derandecker.popularmoviesstage2.model.RelatedVideos;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
+import com.derandecker.popularmoviesstage2.viewmodels.MainActivityViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
@@ -62,8 +62,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -75,20 +75,7 @@ public class DetailActivity extends AppCompatActivity {
 
         toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
         toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
-
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    toggleButtonChecked();
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
-                } else {
-                    toggleButtonUnChecked();
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
-                }
-            }
-        });
-
+        setListenerForToggleButton();
 
         MovieDetailViewModelFactory factory = new MovieDetailViewModelFactory(mDb, id);
         final MovieDetailViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
@@ -100,13 +87,27 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
         downloadRelatedMovies(id);
 
     }
 
-//TODO:
-//    try to do this work in the viewmodel
-//    so it doesn't reload when changing configurations
+    private void setListenerForToggleButton() {
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    toggleButtonChecked();
+                } else {
+                    toggleButtonUnChecked();
+                }
+            }
+        });
+    }
+
+    //TODO:
+    // try to do this work in the viewmodel
+    // so it doesn't reload when changing configurations
     private void downloadRelatedMovies(int movieId) {
         final URL movie_url = NetworkUtils.buildRelatedVideosUrl(VIDEOS_URL, movieId);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -153,13 +154,16 @@ public class DetailActivity extends AppCompatActivity {
                 .fit()
                 .into(posterIv);
 
-        if (movie.getFave()) {
+        toggleButton.setOnCheckedChangeListener(null);
+        boolean fave = movie.getFave();
+        if (fave) {
             toggleButton.setChecked(true);
-        } else {
-            toggleButton.setChecked(false);
+            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         }
+        setListenerForToggleButton();
 
     }
+
 
     private void populateRelatedVideos(final List<RelatedVideos> relatedVideos) {
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
@@ -175,7 +179,7 @@ public class DetailActivity extends AppCompatActivity {
                     trailerOne.setVisibility(View.VISIBLE);
                     trailerTwo.setText(relatedVideos.get(1).getName());
                     trailerTwo.setVisibility(View.VISIBLE);
-                } catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
@@ -184,6 +188,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void toggleButtonChecked() {
+        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -194,6 +199,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void toggleButtonUnChecked() {
+        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

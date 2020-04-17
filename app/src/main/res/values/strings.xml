@@ -9,6 +9,11 @@
     <string name="trailer_one">Trailer 1</string>
     <string name="trailer_two">Trailer 2</string>
 
+    <string name="favorite_movies_title">Favorite Movies</string>
+    <string name="popular_movies_title">Popular Movies</string>
+    <string name="highest_rated_movies_title">Highest Rated Movies</string>
+
+
     <string name="popular_menu_item">Sort by Popular Movies</string>
     <string name="highest_rated_menu_item">Sort by Highest Rated</string>
     <string name="favorites_menu_item">Show Favorites</string>

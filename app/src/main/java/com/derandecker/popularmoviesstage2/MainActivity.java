@@ -102,35 +102,43 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
 
 
     private void showFavorites() {
+        setTitle(R.string.favorite_movies_title);
         final MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel.getFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
                 mMovie.setMovies(movieEntries);
+                Log.d("showFavorites", "showFavorites triggered");
             }
         });
     }
 
     private void showPopularMovies() {
+        setTitle(R.string.popular_movies_title);
         downloadMovies(MOVIE_URL_POPULAR, POPULAR, false);
-        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        final MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        viewModel.getFavoriteMovies().removeObservers(this);
         viewModel.getPopularMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
+                viewModel.getPopularMovies().removeObserver(this);
                 mMovie.setMovies(movieEntries);
-//                Log.d("showPopularMovies()", movieEntries.get(0).getTitle());
+                Log.d("showPopular", "showPopular triggered");
             }
         });
     }
 
     private void showHighestRatedMovies() {
+        setTitle(R.string.highest_rated_movies_title);
         downloadMovies(MOVIE_URL_TOP_RATED, false, HIGHEST_RATED);
-        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        final MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        viewModel.getFavoriteMovies().removeObservers(this);
         viewModel.getHighestRatedMovies().observe(this, new Observer<List<MovieEntry>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntry> movieEntries) {
+                viewModel.getHighestRatedMovies().removeObserver(this);
                 mMovie.setMovies(movieEntries);
-//                Log.d("showHighestRated()", movieEntries.get(0).getTitle());
+                Log.d("showHighestRated", "showHighestRated triggered");
             }
         });
     }

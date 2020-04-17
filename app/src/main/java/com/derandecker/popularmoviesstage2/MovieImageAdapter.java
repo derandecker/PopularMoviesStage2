@@ -3,7 +3,6 @@ package com.derandecker.popularmoviesstage2;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +13,18 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
 
 public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.ImageViewHolder> {
     private LayoutInflater inflater;
     private Context context;
-    private List<MovieEntry> faveMovies;
+    private List<MovieEntry> mMovies;
     final private MovieClickListener mOnClickListener;
     private MovieEntry movie;
     private static final String BASE_URL = "https://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185";
 
     public interface MovieClickListener {
-        void onListItemClick(List<MovieEntry> faveMovies, int clickedItemIndex);
+        void onListItemClick(List<MovieEntry> mMovies, int clickedItemIndex);
     }
 
     public MovieImageAdapter(Context context, MovieClickListener listener) {
@@ -45,11 +42,11 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        displayFavoriteMovies(holder, position);
+        displayMovies(holder, position);
     }
 
-    private void displayFavoriteMovies(ImageViewHolder holder, int position) {
-        movie = faveMovies.get(position);
+    private void displayMovies(ImageViewHolder holder, int position) {
+        movie = mMovies.get(position);
         setMoviePicHolder(holder, movie);
     }
 
@@ -66,16 +63,16 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
 
     @Override
     public int getItemCount() {
-        if (faveMovies == null) {
+        if (mMovies == null) {
             return 0;
         } else {
-            return faveMovies.size();
+            return mMovies.size();
         }
     }
 
 
     public void setMovies(List<MovieEntry> movieEntries) {
-        faveMovies = movieEntries;
+        mMovies = movieEntries;
         notifyDataSetChanged();
     }
 
@@ -92,7 +89,7 @@ public class MovieImageAdapter extends RecyclerView.Adapter<MovieImageAdapter.Im
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(faveMovies, clickedPosition);
+            mOnClickListener.onListItemClick(mMovies, clickedPosition);
         }
     }
 
