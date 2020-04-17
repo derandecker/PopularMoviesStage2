@@ -6,4 +6,5 @@
     <color name ="colorTitleText">#000000</color>
     <color name ="colorDetailActivityBackground">#e2e2e2</color>
     <color name="colorMovieInfoBackground">#ffffff</color>
+    <color name="relatedTrailersTitles">#0000EE</color>
 </resources>

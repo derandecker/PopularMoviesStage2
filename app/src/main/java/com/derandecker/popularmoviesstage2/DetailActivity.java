@@ -1,7 +1,9 @@
 package com.derandecker.popularmoviesstage2;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -20,18 +22,29 @@ import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.model.RelatedVideos;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
+import com.derandecker.popularmoviesstage2.utils.JSONUtils;
+import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private String relatedVideosString;
+    List<RelatedVideos> relatedVideos;
 
     public static final String EXTRA_ID = "extra_id";
 
     private static final String OUT_OF_NUM = "/10";
 
+    private static final String VIDEOS_URL = "https://api.themoviedb.org/3/movie/";
     private static final String BASE_URL = "https://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185/";
 
@@ -47,6 +60,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -79,15 +94,36 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable MovieEntry movie) {
                 viewModel.getMovie().removeObserver(this);
-                populateUI(movie);
+                populateMainUI(movie);
             }
         });
 
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        downloadRelatedMovies(id);
+
     }
 
 
-    private void populateUI(MovieEntry movie) {
+    private void downloadRelatedMovies(int movieId) {
+        final URL movie_url = NetworkUtils.buildRelatedVideosUrl(VIDEOS_URL, movieId);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isOnline()) {
+                        relatedVideosString = NetworkUtils.getResponseFromHttpUrl(movie_url);
+                    } else {
+                        return;
+                    }
+                    relatedVideos = JSONUtils.parseRelatedVideoJson(relatedVideosString);
+                    populateRelatedVideos(relatedVideos);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void populateMainUI(MovieEntry movie) {
         if (movie == null) {
             return;
         }
@@ -121,13 +157,17 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private void populateRelatedVideos(ArrayList<RelatedVideos> relatedVideos) {
-        TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
-        TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
+    private void populateRelatedVideos(final List<RelatedVideos> relatedVideos) {
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
+                TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
 
-        trailerOne.setText(relatedVideos.get(0).getName());
-        trailerTwo.setText(relatedVideos.get(1).getName());
-
+                trailerOne.setText(relatedVideos.get(0).getName());
+                trailerTwo.setText(relatedVideos.get(1).getName());
+            }
+        });
     }
 
 
@@ -163,5 +203,12 @@ public class DetailActivity extends AppCompatActivity {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
