@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.derandecker.popularmoviesstage2.MainActivity;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
+import com.derandecker.popularmoviesstage2.model.RelatedVideos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +28,6 @@ public class JSONUtils {
         Boolean fave = false;
 
         for (int i = 0; i < results.length(); i++) {
-
             JSONObject movieDetail = results.getJSONObject(i);
             int id = movieDetail.getInt("id");
             String title = movieDetail.getString("title");
@@ -42,6 +42,24 @@ public class JSONUtils {
             movies.add(currentMovie);
         }
         return movies;
+    }
+
+    public static List<RelatedVideos> parseRelatedVideoJson(String json) throws JSONException {
+        JSONObject jsonString = new JSONObject(json);
+        JSONArray results = jsonString.getJSONArray("results");
+
+        ArrayList<RelatedVideos> relatedVideos = new ArrayList<RelatedVideos>();
+        RelatedVideos currentRelatedVideos;
+
+        for (int i = 0; i < 2; i++) {
+            JSONObject relatedVideoItem = results.getJSONObject(i);
+            String key = relatedVideoItem.getString("key");
+            String name = relatedVideoItem.getString("name");
+
+            currentRelatedVideos = new RelatedVideos(key, name);
+            relatedVideos.add(currentRelatedVideos);
+        }
+        return relatedVideos;
     }
 }
 

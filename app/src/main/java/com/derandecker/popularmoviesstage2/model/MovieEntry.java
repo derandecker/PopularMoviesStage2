@@ -28,20 +28,6 @@ public class MovieEntry {
     public MovieEntry() {
     }
 
-//    PROBABLY NOT NEEDED!
-//    @Ignore
-//    public MovieEntry(String title, String imagePath, String overview,
-//                      int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
-//        this.title = title;
-//        this.imagePath = imagePath;
-//        this.overview = overview;
-//        this.voteAverage = voteAverage;
-//        this.releaseDate = releaseDate;
-//        this.popular = popular;
-//        this.highestRated = highestRated;
-//        this.fave = fave;
-//    }
-
     public MovieEntry(int id, int order, String title, String imagePath, String overview,
                       int voteAverage, String releaseDate, boolean popular, boolean highestRated,  boolean fave) {
         this.id = id;
@@ -93,9 +79,5 @@ public class MovieEntry {
 
     public Boolean getFave() {
         return fave;
-    }
-
-    public void setFave(Boolean favorite){
-        this.fave = favorite;
     }
 }

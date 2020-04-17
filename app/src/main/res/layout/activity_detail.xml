@@ -31,6 +31,20 @@
                 app:layout_constraintTop_toTopOf="@id/constraint_layout" />
 
             <TextView
+                android:id="@+id/trailers_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:text="@string/trailers_label"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/trailer_one_tv"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintTop_toTopOf="@id/poster_iv"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
                 android:id="@+id/trailer_one_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,8 +53,7 @@
                 app:layout_constraintBottom_toTopOf="@id/trailer_two_tv"
                 app:layout_constraintLeft_toRightOf="@id/poster_iv"
                 app:layout_constraintRight_toRightOf="@id/constraint_layout"
-                app:layout_constraintTop_toTopOf="@id/poster_iv"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toBottomOf="@id/trailers_label" />
 
             <TextView
                 android:id="@+id/trailer_two_tv"
@@ -62,7 +75,7 @@
                 android:paddingEnd="5dp"
                 android:paddingRight="5dp"
                 android:textColor="@color/colorTitleText"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@+id/poster_iv" />
@@ -72,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vote_average_label"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="@id/myToggleButton"
                 app:layout_constraintTop_toTopOf="@id/myToggleButton" />
 
@@ -80,6 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="@id/vote_average_label"
                 app:layout_constraintTop_toTopOf="@id/vote_average_label" />
 
@@ -88,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/release_date_label"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/myToggleButton"
                 app:layout_constraintLeft_toLeftOf="@id/vote_average_label"
                 app:layout_constraintTop_toBottomOf="@id/vote_average_label" />
@@ -97,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="@id/release_date_label"
                 app:layout_constraintTop_toTopOf="@id/release_date_label" />
 
@@ -106,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:paddingBottom="20dp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@id/release_date_label" />
 
