@@ -1,24 +1,21 @@
 package com.derandecker.popularmoviesstage2;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
@@ -50,26 +47,11 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     private int spanSize = 3;
     private Boolean fave;
     AppDatabase database;
-    private static final String OUT_STATE_POPULAR = "out_state_popular";
-    private static final String OUT_STATE_HIGHEST_RATED = "out_state_highest_rated";
-    private static final String OUT_STATE_FAVORITES = "out_state_favorites";
-    private static final String FAVORITES = "favorites";
     public static final boolean POPULAR = true;
     public static final boolean HIGHEST_RATED = true;
     private static final String MOVIE_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
-    private static final String DEFAULT_URL = "https://api.themoviedb.org/3/movie/popular";
-    private static final String RECYCLER_VIEW_STATE = "recycler_view_state";
     List<MovieEntry> movies;
-    Parcelable recyclerViewState = null;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (recyclerViewState != null) {
-            mMoviesPics.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -81,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("onCreate","MainActivity was recreated");
+        Log.d("onCreate", "MainActivity was recreated");
         setContentView(R.layout.activity_main);
 
         mMoviesPics = (RecyclerView) findViewById(R.id.rv_movies);
@@ -194,19 +176,5 @@ public class MainActivity extends AppCompatActivity implements MovieImageAdapter
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        recyclerViewState = mMoviesPics.getLayoutManager().onSaveInstanceState();
-        outState.putParcelable(RECYCLER_VIEW_STATE, recyclerViewState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null)
-            recyclerViewState = savedInstanceState.getParcelable(RECYCLER_VIEW_STATE);
     }
 }
