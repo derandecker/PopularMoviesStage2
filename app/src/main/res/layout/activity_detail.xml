@@ -28,72 +28,95 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/constraint_layout"
-                app:layout_constraintTop_toTopOf="@id/constraint_layout"
-                />
+                app:layout_constraintTop_toTopOf="@id/constraint_layout" />
+
+            <TextView
+                android:id="@+id/trailer_one_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trailer_one"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/trailer_two_tv"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                app:layout_constraintTop_toTopOf="@id/poster_iv"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/trailer_two_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trailer_two"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/poster_iv"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                app:layout_constraintTop_toBottomOf="@id/trailer_one_tv" />
 
             <TextView
                 android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/poster_iv"
-                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 android:paddingStart="5dp"
                 android:paddingLeft="5dp"
                 android:paddingEnd="5dp"
                 android:paddingRight="5dp"
                 android:textColor="@color/colorTitleText"
                 android:textSize="40sp"
-                android:textStyle="bold" />
-
-            <ToggleButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/title_tv"
-                android:id="@+id/myToggleButton"
-                android:textOn=""
-                android:textOff=""/>
+                app:layout_constraintTop_toBottomOf="@+id/poster_iv" />
+
             <TextView
                 android:id="@+id/vote_average_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/vote_average_label"
                 app:layout_constraintLeft_toRightOf="@id/myToggleButton"
-                app:layout_constraintTop_toTopOf="@id/myToggleButton"
-                android:text="@string/vote_average_label" />
+                app:layout_constraintTop_toTopOf="@id/myToggleButton" />
 
             <TextView
                 android:id="@+id/vote_average_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/vote_average_label"
+                android:paddingLeft="5dp"
                 app:layout_constraintLeft_toRightOf="@id/vote_average_label"
-                android:paddingLeft="5dp" />
+                app:layout_constraintTop_toTopOf="@id/vote_average_label" />
 
             <TextView
                 android:id="@+id/release_date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/vote_average_label"
-                app:layout_constraintTop_toBottomOf="@id/vote_average_label"
+                android:text="@string/release_date_label"
                 app:layout_constraintBottom_toBottomOf="@id/myToggleButton"
-                android:text="@string/release_date_label" />
+                app:layout_constraintLeft_toLeftOf="@id/vote_average_label"
+                app:layout_constraintTop_toBottomOf="@id/vote_average_label" />
 
             <TextView
                 android:id="@+id/release_date_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/release_date_label"
+                android:paddingLeft="5dp"
                 app:layout_constraintLeft_toRightOf="@id/release_date_label"
-                android:paddingLeft="5dp" />
+                app:layout_constraintTop_toTopOf="@id/release_date_label" />
 
             <TextView
                 android:id="@+id/overview_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/release_date_label"
-                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 android:layout_margin="5dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
+                app:layout_constraintTop_toBottomOf="@id/release_date_label" />
+
+            <ToggleButton
+                android:id="@+id/myToggleButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
+                app:layout_constraintTop_toBottomOf="@id/title_tv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

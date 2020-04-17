@@ -5,6 +5,8 @@
     <string name="internet_connection_error">Internet Connection Error</string>
     <string name="vote_average_label">Average User Rating:</string>
     <string name="release_date_label">Released:</string>
+    <string name="trailer_one">Trailer 1</string>
+    <string name="trailer_two">Trailer 2</string>
 
     <string name="popular_menu_item">Sort by Popular Movies</string>
     <string name="highest_rated_menu_item">Sort by Highest Rated</string>
