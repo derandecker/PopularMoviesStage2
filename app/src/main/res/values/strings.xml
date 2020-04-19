@@ -14,7 +14,7 @@
     <string name="highest_rated_movies_title">Highest Rated Movies</string>
 
 
-    <string name="popular_menu_item">Sort by Popular Movies</string>
-    <string name="highest_rated_menu_item">Sort by Highest Rated</string>
-    <string name="favorites_menu_item">Show Favorites</string>
+    <string name="popular_menu_item">Popular Movies</string>
+    <string name="highest_rated_menu_item">Highest Rated</string>
+    <string name="favorites_menu_item">Favorites</string>
 </resources>
