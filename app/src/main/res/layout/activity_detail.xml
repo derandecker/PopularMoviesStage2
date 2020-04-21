@@ -1,125 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDetailActivityBackground"
     tools:context=".DetailActivity">
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/colorMovieInfoBackground">
+        android:background="@color/colorPrimaryDark">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            >
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/poster_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/constraint_layout"
-                app:layout_constraintTop_toTopOf="@id/constraint_layout" />
-
-            <TextView
-                android:id="@+id/trailers_label"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:text="@string/trailers_label"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/trailer_one_tv"
-                app:layout_constraintLeft_toRightOf="@id/poster_iv"
-                app:layout_constraintTop_toTopOf="@id/poster_iv"
-                app:layout_constraintVertical_chainStyle="packed"/>
-
-            <TextView
-                android:id="@+id/trailer_one_tv"
-                android:visibility="gone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/trailer_one"
-                android:textSize="18sp"
-                android:textColor="@color/relatedTrailersTitles"
-                app:layout_constraintBottom_toTopOf="@id/trailer_two_tv"
-                app:layout_constraintLeft_toRightOf="@id/poster_iv"
-                app:layout_constraintRight_toRightOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/trailers_label" />
-
-            <TextView
-                android:id="@+id/trailer_two_tv"
-                android:visibility="gone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/trailer_two"
-                android:textSize="18sp"
-                android:textColor="@color/relatedTrailersTitles"
-                app:layout_constraintBottom_toBottomOf="@id/poster_iv"
-                app:layout_constraintLeft_toRightOf="@id/poster_iv"
-                app:layout_constraintRight_toRightOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/trailer_one_tv" />
+            <ToggleButton
+                android:id="@+id/myToggleButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintRight_toLeftOf="@id/title_tv"
+                app:layout_constraintTop_toTopOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
+                />
 
             <TextView
                 android:id="@+id/title_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
-                android:paddingEnd="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/colorTitleText"
-                android:textSize="30sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="sans-serif-smallcaps"
+                app:fontFamily="sans-serif-smallcaps"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="35sp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@+id/poster_iv" />
+                app:layout_constraintBottom_toTopOf="@+id/card_view_poster"
+                app:layout_constraintLeft_toRightOf="@id/myToggleButton"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                />
 
             <TextView
                 android:id="@+id/vote_average_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vote_average_label"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:textColor="@color/colorPrimaryLight"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toRightOf="@id/myToggleButton"
-                app:layout_constraintTop_toTopOf="@id/myToggleButton" />
+                app:layout_constraintLeft_toLeftOf="@id/card_view_poster"
+                app:layout_constraintTop_toBottomOf="@id/card_view_poster" />
 
             <TextView
                 android:id="@+id/vote_average_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorPrimaryLight"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toRightOf="@id/vote_average_label"
-                app:layout_constraintTop_toTopOf="@id/vote_average_label" />
+                android:fontFamily="sans-serif-black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/release_date_tv"
+                app:layout_constraintLeft_toRightOf="@id/vote_average_label" />
 
             <TextView
                 android:id="@+id/release_date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/release_date_label"
+                android:textColor="@color/colorPrimaryLight"
+                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/myToggleButton"
+                app:layout_constraintBottom_toTopOf="@id/card_view_overview"
                 app:layout_constraintLeft_toLeftOf="@id/vote_average_label"
                 app:layout_constraintTop_toBottomOf="@id/vote_average_label" />
 
@@ -128,32 +93,130 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimaryLight"
                 android:textSize="20sp"
+                android:fontFamily="sans-serif-black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/release_date_label"
                 app:layout_constraintTop_toTopOf="@id/release_date_label" />
 
-            <TextView
-                android:id="@+id/overview_tv"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_trailers"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/card_view_poster"
+                app:layout_constraintLeft_toRightOf="@id/card_view_poster"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                app:layout_constraintTop_toTopOf="@id/card_view_poster">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimary"
+                    >
+
+                    <TextView
+                        android:id="@+id/trailers_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/trailers_label"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/trailer_one_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/trailer_one"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/relatedTrailersTitles"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@id/trailer_two_tv"
+                        app:layout_constraintTop_toBottomOf="@id/trailers_label" />
+
+                    <TextView
+                        android:id="@+id/trailer_two_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:text="@string/trailer_two"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/relatedTrailersTitles"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/trailer_one_tv" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="20dp"
-                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="12dp"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/release_date_label" />
+                app:layout_constraintTop_toBottomOf="@id/title_tv"
+                card_view:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                >
 
-            <ToggleButton
-                android:id="@+id/myToggleButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:textOff=""
-                android:textOn=""
+                <ImageView
+                    android:id="@+id/poster_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_overview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLight"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/title_tv" />
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                app:layout_constraintTop_toBottomOf="@id/release_date_label"
+                card_view:cardCornerRadius="8dp"
+                android:elevation="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/overview_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryLight"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20sp"
+                    app:fontFamily="sans-serif-light" />
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
+
 
 </LinearLayout>

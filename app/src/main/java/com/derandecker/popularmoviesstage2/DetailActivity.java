@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -172,11 +173,13 @@ public class DetailActivity extends AppCompatActivity {
                 TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
                 TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
                 TextView relatedTrailersLabel = (TextView) findViewById(R.id.trailers_label);
+                CardView trailerCardView = (CardView) findViewById(R.id.card_view_trailers);
 
                 try {
                     trailerOne.setText(relatedVideos.get(0).getName());
                     relatedTrailersLabel.setVisibility(View.VISIBLE);
                     trailerOne.setVisibility(View.VISIBLE);
+                    trailerCardView.setVisibility(View.VISIBLE);
                     trailerTwo.setText(relatedVideos.get(1).getName());
                     trailerTwo.setVisibility(View.VISIBLE);
                 } catch (IndexOutOfBoundsException e) {

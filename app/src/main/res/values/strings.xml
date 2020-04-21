@@ -5,7 +5,7 @@
     <string name="internet_connection_error">Internet Connection Error</string>
     <string name="vote_average_label">Average User Rating:</string>
     <string name="release_date_label">Released:</string>
-    <string name="trailers_label">Related \nTrailers</string>
+    <string name="trailers_label">Related Trailers</string>
     <string name="trailer_one">Trailer 1</string>
     <string name="trailer_two">Trailer 2</string>
 

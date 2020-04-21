@@ -2,9 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:padding="0dp">
-
+    android:padding="0dp"
+    android:background="@color/colorPrimaryLight"
+    >
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_poster"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="5dp"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_movie_pic"
         android:layout_width="wrap_content"
@@ -12,4 +21,6 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY">
     </ImageView>
+    </androidx.cardview.widget.CardView>
+
 </FrameLayout>
