@@ -207,7 +207,7 @@
                     android:layout_gravity="center"
                     android:background="@color/colorPrimaryLight"
                     android:fontFamily="sans-serif-light"
-                    android:padding="8dp"
+                    android:padding="15dp"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="20sp"
                     app:fontFamily="sans-serif-light" />

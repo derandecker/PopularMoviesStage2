@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactor
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +49,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String OUT_OF_NUM = "/10";
 
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/";
     private static final String VIDEOS_URL = "https://api.themoviedb.org/3/movie/";
     private static final String BASE_URL = "https://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE = "w185/";
@@ -91,6 +94,13 @@ public class DetailActivity extends AppCompatActivity {
 
         downloadRelatedMovies(id);
 
+    }
+
+    private void openVideoIntent(String videoID) {
+        Uri videoUri = NetworkUtils.buildYoutubeUri(YOUTUBE_BASE_URL, videoID);
+        Intent videoIntent = new Intent(Intent.ACTION_VIEW, videoUri);
+        startActivity(videoIntent);
+        Log.d("openVideoIntent", videoUri.toString());
     }
 
     private void setListenerForToggleButton() {
@@ -182,6 +192,20 @@ public class DetailActivity extends AppCompatActivity {
                     trailerCardView.setVisibility(View.VISIBLE);
                     trailerTwo.setText(relatedVideos.get(1).getName());
                     trailerTwo.setVisibility(View.VISIBLE);
+                    trailerOne.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            openVideoIntent(relatedVideos.get(0).getKey());
+                        }
+                    });
+                    trailerTwo.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            openVideoIntent(relatedVideos.get(1).getKey());
+                        }
+                    });
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }

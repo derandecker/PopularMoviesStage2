@@ -15,8 +15,10 @@ import java.util.Scanner;
 public class NetworkUtils {
     private static final String API_KEY = BuildConfig.MY_API_KEY;
 
+    final private static String WATCH_PATH = "watch";
+    final private static String VIDEO_ID_PARAM = "v";
     final private static String API_KEY_PARAM = "api_key";
-    final private static String VIDEOS = "videos";
+    final private static String VIDEOS_PATH = "videos";
 
     public static URL buildMoviesUrl(String MOVIE_URL) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
@@ -37,7 +39,7 @@ public class NetworkUtils {
         String movieIdString = Integer.toString(movieId);
         Uri builtUri = Uri.parse(VIDEOS_URL).buildUpon()
                 .appendPath(movieIdString)
-                .appendPath(VIDEOS)
+                .appendPath(VIDEOS_PATH)
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
 
@@ -49,6 +51,14 @@ public class NetworkUtils {
         }
 
         return url;
+    }
+
+    public static Uri buildYoutubeUri(String YOUTUBE_BASE_URL, String videoID){
+        Uri builtUri = Uri.parse(YOUTUBE_BASE_URL).buildUpon()
+                .appendPath(WATCH_PATH)
+                .appendQueryParameter(VIDEO_ID_PARAM, videoID)
+                .build();
+        return builtUri;
     }
 
 
