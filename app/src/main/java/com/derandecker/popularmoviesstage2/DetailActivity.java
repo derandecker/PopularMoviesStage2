@@ -19,10 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
+import com.derandecker.popularmoviesstage2.databinding.ActivityDetailBinding;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.model.RelatedVideos;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
@@ -55,19 +57,20 @@ public class DetailActivity extends AppCompatActivity {
     private static final String IMAGE_SIZE = "w185/";
 
     private static final int DEFAULT_INT = 0;
-//    private static final String DEFAULT_STRING = "Data not available";
 
     private AppDatabase mDb;
     private int id;
     ToggleButton toggleButton;
+    ActivityDetailBinding mBinding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -77,8 +80,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
 
-        toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
-        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         setListenerForToggleButton();
 
         MovieDetailViewModelFactory factory = new MovieDetailViewModelFactory(mDb, id);
@@ -104,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setListenerForToggleButton() {
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -116,9 +118,6 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    //TODO:
-    // try to do this work in the viewmodel
-    // so it doesn't reload when changing configurations
     private void downloadRelatedMovies(int movieId) {
         final URL movie_url = NetworkUtils.buildRelatedVideosUrl(VIDEOS_URL, movieId);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -143,17 +142,10 @@ public class DetailActivity extends AppCompatActivity {
         if (movie == null) {
             return;
         }
-
-        TextView titleTv = (TextView) findViewById(R.id.title_tv);
-        ImageView posterIv = (ImageView) findViewById(R.id.poster_iv);
-        TextView voteAvgTv = (TextView) findViewById(R.id.vote_average_tv);
-        TextView releaseDateTv = (TextView) findViewById(R.id.release_date_tv);
-        TextView overviewTv = (TextView) findViewById(R.id.overview_tv);
-
-        titleTv.setText(movie.getTitle());
-        voteAvgTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
-        releaseDateTv.setText(movie.getReleaseDate());
-        overviewTv.setText(movie.getOverview());
+        mBinding.titleTv.setText(movie.getTitle());
+        mBinding.voteAverageTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
+        mBinding.releaseDateTv.setText(movie.getReleaseDate());
+        mBinding.overviewTv.setText(movie.getOverview());
 
 //      TODO:
 //          Change download and error placeholders to something
@@ -163,13 +155,13 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)
                 .fit()
-                .into(posterIv);
+                .into(mBinding.posterIv);
 
-        toggleButton.setOnCheckedChangeListener(null);
+        mBinding.myToggleButton.setOnCheckedChangeListener(null);
         boolean fave = movie.getFave();
         if (fave) {
-            toggleButton.setChecked(true);
-            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
+            mBinding.myToggleButton.setChecked(true);
+            mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         }
         setListenerForToggleButton();
 
@@ -180,32 +172,27 @@ public class DetailActivity extends AppCompatActivity {
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                TextView trailerOne = (TextView) findViewById(R.id.trailer_one_tv);
-                TextView trailerTwo = (TextView) findViewById(R.id.trailer_two_tv);
-                TextView relatedTrailersLabel = (TextView) findViewById(R.id.trailers_label);
-                CardView trailerCardView = (CardView) findViewById(R.id.card_view_trailers);
-
                 try {
-                    trailerOne.setText(relatedVideos.get(0).getName());
-                    relatedTrailersLabel.setVisibility(View.VISIBLE);
-                    trailerOne.setVisibility(View.VISIBLE);
-                    trailerCardView.setVisibility(View.VISIBLE);
-                    trailerTwo.setText(relatedVideos.get(1).getName());
-                    trailerTwo.setVisibility(View.VISIBLE);
-                    trailerOne.setOnClickListener(new View.OnClickListener() {
-
+                    mBinding.trailerOneTv.setText(relatedVideos.get(0).getName());
+                    mBinding.trailerOneTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            Log.d("onClick trailer", "test");
                             openVideoIntent(relatedVideos.get(0).getKey());
                         }
                     });
-                    trailerTwo.setOnClickListener(new View.OnClickListener() {
-
+                    mBinding.trailersLabel.setVisibility(View.VISIBLE);
+                    mBinding.trailerOneTv.setVisibility(View.VISIBLE);
+                    mBinding.cardViewTrailers.setVisibility(View.VISIBLE);
+                    mBinding.trailerTwoTv.setText(relatedVideos.get(1).getName());
+                    mBinding.trailerTwoTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             openVideoIntent(relatedVideos.get(1).getKey());
                         }
                     });
+                    mBinding.trailerTwoTv.setVisibility(View.VISIBLE);
+
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -215,7 +202,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void toggleButtonChecked() {
-        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
+        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -226,7 +213,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void toggleButtonUnChecked() {
-        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

@@ -18,6 +18,7 @@ android {
     }
 
     buildTypes.each { it.buildConfigField 'String', 'MY_API_KEY', APIKey }
+    dataBinding.enabled = true;
 }
 
 dependencies {
