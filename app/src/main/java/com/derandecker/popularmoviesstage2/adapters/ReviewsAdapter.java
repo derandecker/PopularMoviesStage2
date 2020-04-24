@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.derandecker.popularmoviesstage2.R;
@@ -53,7 +52,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
     private void displayReviews(ReviewsViewHolder holder, int position) {
         review = mReviews.get(position);
-        holder.author_tv.setText(review.getAuthor());
+        holder.author_tv.setText("Written by " + review.getAuthor());
         holder.content_tv.setText(review.getContent());
     }
 
