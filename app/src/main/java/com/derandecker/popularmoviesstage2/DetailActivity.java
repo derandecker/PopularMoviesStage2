@@ -27,6 +27,7 @@ import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.databinding.ActivityDetailBinding;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.model.RelatedVideos;
+import com.derandecker.popularmoviesstage2.model.Reviews;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
@@ -46,6 +47,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private String relatedVideosString;
     List<RelatedVideos> relatedVideos;
+
+    private String reviewsString;
+    List<Reviews> reviews;
 
     public static final String EXTRA_ID = "extra_id";
 
@@ -96,6 +100,7 @@ public class DetailActivity extends AppCompatActivity {
 
         downloadRelatedMovies(id);
 
+        downloadReviews(id);
     }
 
     private void openVideoIntent(String videoID) {
@@ -120,7 +125,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void downloadRelatedMovies(int movieId) {
         final URL movie_url = NetworkUtils.buildRelatedVideosUrl(VIDEOS_URL, movieId);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -131,6 +136,27 @@ public class DetailActivity extends AppCompatActivity {
                     }
                     relatedVideos = JSONUtils.parseRelatedVideoJson(relatedVideosString);
                     populateRelatedVideos(relatedVideos);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void downloadReviews(int movieId) {
+        final URL reviews_url = NetworkUtils.buildReviewsUrl(VIDEOS_URL, movieId);
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isOnline()) {
+                        reviewsString = NetworkUtils.getResponseFromHttpUrl(reviews_url);
+                    } else {
+                        return;
+                    }
+                    reviews = JSONUtils.parseReviewsJson(reviewsString);
+//                    populateReviews(reviews);
+                    Log.d("Review0", reviews.get(0).getAuthor());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }

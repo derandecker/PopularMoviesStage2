@@ -19,6 +19,8 @@ public class NetworkUtils {
     final private static String VIDEO_ID_PARAM = "v";
     final private static String API_KEY_PARAM = "api_key";
     final private static String VIDEOS_PATH = "videos";
+    final private static String REVIEWS_PATH = "reviews";
+
 
     public static URL buildMoviesUrl(String MOVIE_URL) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
@@ -40,6 +42,24 @@ public class NetworkUtils {
         Uri builtUri = Uri.parse(VIDEOS_URL).buildUpon()
                 .appendPath(movieIdString)
                 .appendPath(VIDEOS_PATH)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildReviewsUrl(String VIDEOS_URL, int movieId) {
+        String movieIdString = Integer.toString(movieId);
+        Uri builtUri = Uri.parse(VIDEOS_URL).buildUpon()
+                .appendPath(movieIdString)
+                .appendPath(REVIEWS_PATH)
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
 

@@ -3,7 +3,9 @@
 /gradle.properties
 /local.properties
 /.idea
+/.idea/caches
 .DS_Store
 /build
 /captures
+/release
 .externalNativeBuild
