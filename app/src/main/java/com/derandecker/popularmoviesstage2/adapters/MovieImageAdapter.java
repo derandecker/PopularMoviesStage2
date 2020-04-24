@@ -1,4 +1,4 @@
-package com.derandecker.popularmoviesstage2;
+package com.derandecker.popularmoviesstage2.adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.derandecker.popularmoviesstage2.R;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.squareup.picasso.Picasso;
 

@@ -1,21 +1,15 @@
 package com.derandecker.popularmoviesstage2.utils;
 
-import android.util.Log;
-
-import com.derandecker.popularmoviesstage2.MainActivity;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.model.RelatedVideos;
-import com.derandecker.popularmoviesstage2.model.Reviews;
+import com.derandecker.popularmoviesstage2.model.Review;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Manifest;
 
 public class JSONUtils {
 
@@ -63,19 +57,19 @@ public class JSONUtils {
         return relatedVideos;
     }
 
-    public static List<Reviews> parseReviewsJson(String json) throws JSONException {
+    public static List<Review> parseReviewsJson(String json) throws JSONException {
         JSONObject jsonString = new JSONObject(json);
         JSONArray results = jsonString.getJSONArray("results");
 
-        ArrayList<Reviews> reviews = new ArrayList<Reviews>();
-        Reviews currentReviews;
+        ArrayList<Review> reviews = new ArrayList<Review>();
+        Review currentReviews;
 
         for (int i = 0; i < results.length(); i++) {
             JSONObject reviewItem = results.getJSONObject(i);
             String author = reviewItem.getString("author");
             String content = reviewItem.getString("content");
 
-            currentReviews = new Reviews(author, content);
+            currentReviews = new Review(author, content);
             reviews.add(currentReviews);
         }
         return reviews;

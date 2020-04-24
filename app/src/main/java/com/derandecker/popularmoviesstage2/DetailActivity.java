@@ -10,34 +10,34 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.derandecker.popularmoviesstage2.adapters.MovieImageAdapter;
+import com.derandecker.popularmoviesstage2.adapters.ReviewsAdapter;
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.databinding.ActivityDetailBinding;
 import com.derandecker.popularmoviesstage2.model.MovieEntry;
 import com.derandecker.popularmoviesstage2.model.RelatedVideos;
-import com.derandecker.popularmoviesstage2.model.Reviews;
+import com.derandecker.popularmoviesstage2.model.Review;
 import com.derandecker.popularmoviesstage2.utils.AppExecutors;
 import com.derandecker.popularmoviesstage2.utils.JSONUtils;
 import com.derandecker.popularmoviesstage2.utils.NetworkUtils;
-import com.derandecker.popularmoviesstage2.viewmodels.MainActivityViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModel;
 import com.derandecker.popularmoviesstage2.viewmodels.MovieDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     List<RelatedVideos> relatedVideos;
 
     private String reviewsString;
-    List<Reviews> reviews;
+    List<Review> reviews;
 
     public static final String EXTRA_ID = "extra_id";
 
@@ -65,7 +65,10 @@ public class DetailActivity extends AppCompatActivity {
     private AppDatabase mDb;
     private int id;
     ToggleButton toggleButton;
-    ActivityDetailBinding mBinding;
+    ActivityDetailBinding mPrimaryMovieInfoBinding;
+
+    private RecyclerView mReviewsRV;
+    private ReviewsAdapter mReviewAdapter;
 
 
     @Override
@@ -74,7 +77,7 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        mPrimaryMovieInfoBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -84,7 +87,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
 
-        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+        mPrimaryMovieInfoBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         setListenerForToggleButton();
 
         MovieDetailViewModelFactory factory = new MovieDetailViewModelFactory(mDb, id);
@@ -97,6 +100,13 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
+        mReviewsRV = (RecyclerView) findViewById(R.id.rv_reviews);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mReviewsRV.setLayoutManager(layoutManager);
+        mReviewsRV.setHasFixedSize(false);
+        mReviewAdapter = new ReviewsAdapter(this);
+        mReviewsRV.setAdapter(mReviewAdapter);
 
         downloadRelatedMovies(id);
 
@@ -111,7 +121,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setListenerForToggleButton() {
-        mBinding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mPrimaryMovieInfoBinding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -155,8 +165,8 @@ public class DetailActivity extends AppCompatActivity {
                         return;
                     }
                     reviews = JSONUtils.parseReviewsJson(reviewsString);
-//                    populateReviews(reviews);
-                    Log.d("Review0", reviews.get(0).getAuthor());
+                    mReviewAdapter.setReviews(reviews);
+//                    Log.d("Review0", reviews.get(0).getAuthor());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -168,10 +178,10 @@ public class DetailActivity extends AppCompatActivity {
         if (movie == null) {
             return;
         }
-        mBinding.titleTv.setText(movie.getTitle());
-        mBinding.voteAverageTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
-        mBinding.releaseDateTv.setText(movie.getReleaseDate());
-        mBinding.overviewTv.setText(movie.getOverview());
+        mPrimaryMovieInfoBinding.titleTv.setText(movie.getTitle());
+        mPrimaryMovieInfoBinding.voteAverageTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
+        mPrimaryMovieInfoBinding.releaseDateTv.setText(movie.getReleaseDate());
+        mPrimaryMovieInfoBinding.overviewTv.setText(movie.getOverview());
 
 //      TODO:
 //          Change download and error placeholders to something
@@ -181,13 +191,13 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.downloading)
                 .error(R.drawable.unknownerror)
                 .fit()
-                .into(mBinding.posterIv);
+                .into(mPrimaryMovieInfoBinding.posterIv);
 
-        mBinding.myToggleButton.setOnCheckedChangeListener(null);
+        mPrimaryMovieInfoBinding.myToggleButton.setOnCheckedChangeListener(null);
         boolean fave = movie.getFave();
         if (fave) {
-            mBinding.myToggleButton.setChecked(true);
-            mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
+            mPrimaryMovieInfoBinding.myToggleButton.setChecked(true);
+            mPrimaryMovieInfoBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         }
         setListenerForToggleButton();
 
@@ -199,25 +209,25 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    mBinding.trailerOneTv.setText(relatedVideos.get(0).getName());
-                    mBinding.trailerOneTv.setOnClickListener(new View.OnClickListener() {
+                    mPrimaryMovieInfoBinding.trailerOneTv.setText(relatedVideos.get(0).getName());
+                    mPrimaryMovieInfoBinding.trailerOneTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Log.d("onClick trailer", "test");
                             openVideoIntent(relatedVideos.get(0).getKey());
                         }
                     });
-                    mBinding.trailersLabel.setVisibility(View.VISIBLE);
-                    mBinding.trailerOneTv.setVisibility(View.VISIBLE);
-                    mBinding.cardViewTrailers.setVisibility(View.VISIBLE);
-                    mBinding.trailerTwoTv.setText(relatedVideos.get(1).getName());
-                    mBinding.trailerTwoTv.setOnClickListener(new View.OnClickListener() {
+                    mPrimaryMovieInfoBinding.trailersLabel.setVisibility(View.VISIBLE);
+                    mPrimaryMovieInfoBinding.trailerOneTv.setVisibility(View.VISIBLE);
+                    mPrimaryMovieInfoBinding.cardViewTrailers.setVisibility(View.VISIBLE);
+                    mPrimaryMovieInfoBinding.trailerTwoTv.setText(relatedVideos.get(1).getName());
+                    mPrimaryMovieInfoBinding.trailerTwoTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             openVideoIntent(relatedVideos.get(1).getKey());
                         }
                     });
-                    mBinding.trailerTwoTv.setVisibility(View.VISIBLE);
+                    mPrimaryMovieInfoBinding.trailerTwoTv.setVisibility(View.VISIBLE);
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
@@ -228,7 +238,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void toggleButtonChecked() {
-        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
+        mPrimaryMovieInfoBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_filled));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -239,7 +249,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void toggleButtonUnChecked() {
-        mBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
+        mPrimaryMovieInfoBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

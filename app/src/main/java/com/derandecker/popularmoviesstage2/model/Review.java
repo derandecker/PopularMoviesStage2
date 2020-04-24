@@ -1,14 +1,14 @@
 package com.derandecker.popularmoviesstage2.model;
 
-public class Reviews {
+public class Review {
 
     private String author;
     private String content;
 
-    public Reviews() {
+    public Review() {
     }
 
-    public Reviews(String author, String content) {
+    public Review(String author, String content) {
         this.author = author;
         this.content = content;
     }
