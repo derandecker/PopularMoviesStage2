@@ -164,8 +164,14 @@ public class DetailActivity extends AppCompatActivity {
                         return;
                     }
                     reviews = JSONUtils.parseReviewsJson(reviewsString);
-                    mReviewAdapter.setReviews(reviews);
-                } catch (IOException | JSONException e) {
+                    AppExecutors.getInstance().mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mReviewAdapter.setReviews(reviews);
+                        }
+                    });
+                } catch (IOException |
+                        JSONException e) {
                     e.printStackTrace();
                     return;
                 }
