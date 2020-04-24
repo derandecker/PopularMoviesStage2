@@ -16,4 +16,7 @@
     <string name="popular_menu_item">Popular Movies</string>
     <string name="highest_rated_menu_item">Highest Rated</string>
     <string name="favorites_menu_item">Favorites</string>
+
+    <string name="reviews_label">Reviews</string>
+    <string name="movie_poster_content_description">Movie Poster</string>
 </resources>

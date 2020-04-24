@@ -82,7 +82,9 @@ public class DetailActivity extends AppCompatActivity {
         if (intent == null) {
             closeOnError();
         }
-        id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
+        if (intent.hasExtra(EXTRA_ID)) {
+            id = intent.getIntExtra(EXTRA_ID, DEFAULT_INT);
+        } else closeOnError();
 
         mPrimaryMovieInfoBinding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.star_empty));
         setListenerForToggleButton();
@@ -163,9 +165,9 @@ public class DetailActivity extends AppCompatActivity {
                     }
                     reviews = JSONUtils.parseReviewsJson(reviewsString);
                     mReviewAdapter.setReviews(reviews);
-//                    Log.d("Review0", reviews.get(0).getAuthor());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
+                    return;
                 }
             }
         });
@@ -176,7 +178,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
         mPrimaryMovieInfoBinding.titleTv.setText(movie.getTitle());
-        mPrimaryMovieInfoBinding.voteAverageTv.setText(Integer.toString(movie.getVoteAverage()) + OUT_OF_NUM);
+        mPrimaryMovieInfoBinding.voteAverageTv.setText(movie.getVoteAverage() + OUT_OF_NUM);
         mPrimaryMovieInfoBinding.releaseDateTv.setText(movie.getReleaseDate());
         mPrimaryMovieInfoBinding.overviewTv.setText(movie.getOverview());
 
