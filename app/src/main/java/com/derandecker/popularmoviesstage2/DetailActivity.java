@@ -19,11 +19,9 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.derandecker.popularmoviesstage2.adapters.MovieImageAdapter;
 import com.derandecker.popularmoviesstage2.adapters.ReviewsAdapter;
 import com.derandecker.popularmoviesstage2.database.AppDatabase;
 import com.derandecker.popularmoviesstage2.databinding.ActivityDetailBinding;
@@ -64,7 +62,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private AppDatabase mDb;
     private int id;
-    ToggleButton toggleButton;
     ActivityDetailBinding mPrimaryMovieInfoBinding;
 
     private RecyclerView mReviewsRV;
